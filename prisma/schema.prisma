@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model allergen {
+  id                  Int                   @id(map: "allergens_pkey") @default(autoincrement())
+  name                String                @db.Char(50)
+  ingredient_allergen ingredient_allergen[]
+}
+
+model article {
+  id                     Int                      @id(map: "articles_pkey") @default(autoincrement())
+  name                   String                   @db.Char(50)
+  description            String?                  @db.VarChar
+  price                  Decimal                  @db.Decimal(3, 2)
+  qte                    Int                      @default(autoincrement())
+  path_picture           String?                  @db.VarChar
+  vat_id                 Int                      @default(autoincrement())
+  vat                    vat                      @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_fk1")
+  order_provider_article order_provider_article[]
+  provider_article       provider_article[]
+}
+
+model category {
+  id      Int       @id(map: "categories_pkey") @default(autoincrement())
+  name    String    @db.Char(50)
+  product product[]
+}
+
+model customer {
+  id                     Int        @id @default(autoincrement())
+  lastname               String     @db.Char(255)
+  firstname              String     @db.Char(255)
+  email                  String     @db.Char(255)
+  password               String     @db.Char(255)
+  phone                  String     @db.Char(13)
+  new_mail               String?    @db.Char(255)
+  street                 String     @db.VarChar
+  city                   String     @db.Char(255)
+  zipcode                String     @db.Char(13)
+  region                 String     @db.Char(255)
+  country                String     @db.Char(255)
+  restaurant_favorite_id Int        @default(autoincrement())
+  created_at             DateTime   @db.Timestamptz(6)
+  updated_at             DateTime?  @db.Timetz(6)
+  restaurant             restaurant @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
+  order                  order[]
+}
+
+model ingredient {
+  id                  Int                   @id(map: "ingredients_pkey") @default(autoincrement())
+  name                String                @db.Char(50)
+  has_stock           Boolean               @default(true)
+  ingredient_allergen ingredient_allergen[]
+  product_ingredient  product_ingredient[]
+}
+
+model ingredient_allergen {
+  id            Int        @id(map: "ingredients_allergens_pkey") @default(autoincrement())
+  ingredient_id Int        @default(autoincrement())
+  allergen_id   Int        @default(autoincrement())
+  allergen      allergen   @relation(fields: [allergen_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredientallergen_fk2")
+  ingredient    ingredient @relation(fields: [ingredient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredientallergen_fk1")
+}
+
+model order {
+  id            Int             @id @default(autoincrement())
+  total_ttc     Decimal         @db.Decimal(3, 2)
+  is_payed      Boolean         @default(false)
+  created_at    DateTime        @db.Timestamptz(6)
+  updated_at    DateTime?       @db.Timetz(6)
+  payed_at      DateTime?       @db.Timetz(6)
+  customer_id   Int             @default(autoincrement())
+  restaurant_id Int             @default(autoincrement())
+  promo_code_id Int             @default(autoincrement())
+  customer      customer        @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk1")
+  promo_code    promo_code      @relation(fields: [promo_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk3")
+  restaurant    restaurant      @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk2")
+  order_product order_product[]
+}
+
+model order_product {
+  id         Int     @id(map: "orders_products_pkey") @default(autoincrement())
+  order_id   Int     @default(autoincrement())
+  product_id Int     @default(autoincrement())
+  order      order   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk1")
+  product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk2")
+}
+
+model order_provider {
+  id                     Int                      @id(map: "orders_providers_pkey") @default(autoincrement())
+  total_ttc              Decimal                  @db.Decimal(3, 2)
+  is_payed               Boolean                  @default(false)
+  restaurant_id          Int                      @default(autoincrement())
+  provider_id            Int                      @default(autoincrement())
+  provider               provider                 @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderprovider_fk2")
+  restaurant             restaurant               @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderprovider_fk1")
+  order_provider_article order_provider_article[]
+}
+
+model order_provider_article {
+  id                Int            @id(map: "orders_providers_articles_pkey") @default(autoincrement())
+  order_provider_id Int            @default(autoincrement())
+  article_id        Int            @default(autoincrement())
+  article           article        @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproviderarticle_fk2")
+  order_provider    order_provider @relation(fields: [order_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproviderarticle_fk1")
+}
+
+model product {
+  id                 Int                  @id(map: "products_pkey") @default(autoincrement())
+  name               String               @db.VarChar
+  price              Decimal              @db.Decimal(3, 2)
+  path_picture       String?              @db.VarChar
+  description        String               @db.VarChar
+  category_id        Int                  @default(autoincrement())
+  vat_id             Int                  @default(autoincrement())
+  on_sell            Boolean
+  category           category             @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk1")
+  vat                vat                  @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk2")
+  order_product      order_product[]
+  product_ingredient product_ingredient[]
+  restaurant_product restaurant_product[]
+}
+
+model product_ingredient {
+  id            Int        @id(map: "products_ingredients_pkey") @default(autoincrement())
+  product_id    Int        @default(autoincrement())
+  ingredient_id Int        @default(autoincrement())
+  ingredient    ingredient @relation(fields: [ingredient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "productingredient_fk2")
+  product       product    @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "productingredient_fk1")
+}
+
+model promo_code {
+  id                  Int      @id @default(autoincrement())
+  code_key            String   @db.Char(18)
+  percentage_on_order Int
+  is_actif            Boolean
+  created_at          DateTime @db.Timestamptz(6)
+  end_to              DateTime @db.Timetz(6)
+  order               order[]
+}
+
+model provider {
+  id               Int                @id(map: "providers_pkey") @default(autoincrement())
+  name             String             @db.VarChar
+  ref              String?            @db.VarChar
+  email            String?            @db.VarChar
+  phone            String?            @db.Char(13)
+  street           String             @db.VarChar
+  city             String             @db.Char(255)
+  zipcode          String             @db.Char(13)
+  region           String             @db.Char(255)
+  country          String             @db.Char(255)
+  order_provider   order_provider[]
+  provider_article provider_article[]
+}
+
+model provider_article {
+  id          Int      @id(map: "providers_articles_pkey") @default(autoincrement())
+  provider_id Int      @default(autoincrement())
+  article_id  Int      @default(autoincrement())
+  article     article  @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk2")
+  provider    provider @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk1")
+}
+
+model restaurant {
+  id                 Int                  @id(map: "restaurants_pkey") @default(autoincrement())
+  name               String               @db.VarChar
+  email              String               @db.VarChar
+  password           String               @db.VarChar
+  street             String               @db.VarChar
+  city               String               @db.Char(255)
+  zipcode            String               @db.Char(13)
+  region             String               @db.Char(255)
+  country            String               @db.Char(255)
+  customer           customer[]
+  order              order[]
+  order_provider     order_provider[]
+  restaurant_product restaurant_product[]
+}
+
+model restaurant_product {
+  id            Int        @id @default(autoincrement())
+  restaurant_id Int        @default(autoincrement())
+  product_id    Int        @default(autoincrement())
+  product       product    @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "restaurantproduct_fk2")
+  restaurant    restaurant @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "restaurantproduct_fk1")
+}
+
+model vat {
+  id         Int       @id @default(autoincrement())
+  percentage Decimal   @db.Decimal(3, 2)
+  article    article[]
+  product    product[]
+}
