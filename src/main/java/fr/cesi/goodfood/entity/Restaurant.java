@@ -44,8 +44,9 @@ public class Restaurant {
     private Country country;
 
     @OneToMany
-    @JoinTable(name = "restaurant_product", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns =
-    @JoinColumn(name = "product_id"))
+    @JoinTable(name = "restaurant_product",
+               joinColumns = @JoinColumn(name = "restaurant_id"),
+               inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productsSelled;
 
 }

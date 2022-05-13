@@ -35,8 +35,9 @@ public class Ingredient extends Article {
     private boolean isVeganFriendly;
 
     @OneToMany
-    @JoinTable(name = "ingredient_allergen", joinColumns = @JoinColumn(name = "ingredient_id"), inverseJoinColumns =
-    @JoinColumn(name = "allergen_id"))
+    @JoinTable(name = "ingredient_allergen",
+               joinColumns = @JoinColumn(name = "ingredient_id"),
+               inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     private List<Allergen> allergens;
 
 }

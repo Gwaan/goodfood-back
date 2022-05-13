@@ -47,8 +47,9 @@ public class Provider {
     private Country country;
 
     @ManyToMany
-    @JoinTable(name = "provider_article", joinColumns = @JoinColumn(name = "provider_id"), inverseJoinColumns
-            = @JoinColumn(name = "article_id"))
+    @JoinTable(name = "provider_article",
+               joinColumns = @JoinColumn(name = "provider_id"),
+               inverseJoinColumns = @JoinColumn(name = "article_id"))
     List<Article> articlesSelled;
 
 }
