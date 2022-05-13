@@ -18,18 +18,12 @@ model article {
   name                   String                   @db.Char(50)
   description            String?                  @db.VarChar
   price                  Decimal                  @db.Decimal(3, 2)
-  qte                    Int                      @default(autoincrement())
+  quantity               Int                      @default(autoincrement())
   path_picture           String?                  @db.VarChar
   vat_id                 Int                      @default(autoincrement())
   vat                    vat                      @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_fk1")
   order_provider_article order_provider_article[]
   provider_article       provider_article[]
-}
-
-model category {
-  id      Int       @id(map: "categories_pkey") @default(autoincrement())
-  name    String    @db.Char(50)
-  product product[]
 }
 
 model customer {
@@ -55,7 +49,9 @@ model customer {
 model ingredient {
   id                  Int                   @id(map: "ingredients_pkey") @default(autoincrement())
   name                String                @db.Char(50)
-  has_stock           Boolean               @default(true)
+  is_in_stock         Boolean               @default(true)
+  is_pork_free        Boolean
+  is_vegan_friendly   Boolean
   ingredient_allergen ingredient_allergen[]
   product_ingredient  product_ingredient[]
 }
@@ -117,10 +113,9 @@ model product {
   price              Decimal              @db.Decimal(3, 2)
   path_picture       String?              @db.VarChar
   description        String               @db.VarChar
-  category_id        Int                  @default(autoincrement())
   vat_id             Int                  @default(autoincrement())
-  on_sell            Boolean
-  category           category             @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk1")
+  is_on_sale         Boolean
+  category           String               @db.Char(1)
   vat                vat                  @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk2")
   order_product      order_product[]
   product_ingredient product_ingredient[]
@@ -139,9 +134,9 @@ model promo_code {
   id                  Int      @id @default(autoincrement())
   code_key            String   @db.Char(18)
   percentage_on_order Int
-  is_actif            Boolean
+  is_active           Boolean
   created_at          DateTime @db.Timestamptz(6)
-  end_to              DateTime @db.Timetz(6)
+  end_at              DateTime @db.Timetz(6)
   order               order[]
 }
 
@@ -171,7 +166,7 @@ model provider_article {
 model restaurant {
   id                 Int                  @id(map: "restaurants_pkey") @default(autoincrement())
   name               String               @db.VarChar
-  email              String               @db.VarChar
+  email              String               @db.Char(1)
   password           String               @db.VarChar
   street             String               @db.VarChar
   city               String               @db.Char(255)
