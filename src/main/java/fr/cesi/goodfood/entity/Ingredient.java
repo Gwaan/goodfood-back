@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -19,11 +22,13 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ingredient extends Article {
+public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String name;
 
     @Column(name = "is_in_stock")
     private boolean isInStock;
@@ -34,7 +39,20 @@ public class Ingredient extends Article {
     @Column(name = "is_vegan_friendly")
     private boolean isVeganFriendly;
 
-    @OneToMany
+    private String description;
+
+    private BigDecimal price;
+
+    private int quantity;
+
+    @Column(name = "path_picture")
+    private String picture;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vat_id")
+    private Vat vat;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "ingredient_allergen",
                joinColumns = @JoinColumn(name = "ingredient_id"),
                inverseJoinColumns = @JoinColumn(name = "allergen_id"))

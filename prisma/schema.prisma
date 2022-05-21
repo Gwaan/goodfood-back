@@ -17,7 +17,7 @@ model article {
   id                     Int                      @id(map: "articles_pkey") @default(autoincrement())
   name                   String                   @db.Char(50)
   description            String?                  @db.VarChar
-  price                  Decimal                  @db.Decimal(3, 2)
+  price                  Decimal                  @db.Decimal(5, 2)
   quantity               Int                      @default(autoincrement())
   path_picture           String?                  @db.VarChar
   vat_id                 Int                      @default(autoincrement())
@@ -52,8 +52,16 @@ model ingredient {
   is_in_stock         Boolean               @default(true)
   is_pork_free        Boolean
   is_vegan_friendly   Boolean
+  description         String                @db.VarChar
+  price               Decimal               @db.Decimal(5, 2)
+  quantity            Int
+  path_picture        String?               @db.VarChar
+  vat_id              Int
+  vat                 vat                   @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredients_fk1")
   ingredient_allergen ingredient_allergen[]
   product_ingredient  product_ingredient[]
+
+  @@index([vat_id], map: "fki_ingredients_fk1")
 }
 
 model ingredient_allergen {
@@ -66,7 +74,7 @@ model ingredient_allergen {
 
 model order {
   id            Int             @id @default(autoincrement())
-  total_ttc     Decimal         @db.Decimal(3, 2)
+  total_ttc     Decimal         @db.Decimal(5, 2)
   is_payed      Boolean         @default(false)
   created_at    DateTime        @db.Timestamptz(6)
   updated_at    DateTime?       @db.Timetz(6)
@@ -110,12 +118,12 @@ model order_provider_article {
 model product {
   id                 Int                  @id(map: "products_pkey") @default(autoincrement())
   name               String               @db.VarChar
-  price              Decimal              @db.Decimal(3, 2)
+  price              Decimal              @db.Decimal(5, 2)
   path_picture       String?              @db.VarChar
   description        String               @db.VarChar
   vat_id             Int                  @default(autoincrement())
   is_on_sale         Boolean
-  category           String               @db.Char(1)
+  category           String               @db.VarChar
   vat                vat                  @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk2")
   order_product      order_product[]
   product_ingredient product_ingredient[]
@@ -166,7 +174,7 @@ model provider_article {
 model restaurant {
   id                 Int                  @id(map: "restaurants_pkey") @default(autoincrement())
   name               String               @db.VarChar
-  email              String               @db.Char(1)
+  email              String               @db.VarChar
   password           String               @db.VarChar
   street             String               @db.VarChar
   city               String               @db.Char(255)
@@ -188,8 +196,9 @@ model restaurant_product {
 }
 
 model vat {
-  id         Int       @id @default(autoincrement())
-  percentage Decimal   @db.Decimal(3, 2)
+  id         Int          @id @default(autoincrement())
+  percentage Decimal      @db.Decimal(5, 2)
   article    article[]
+  ingredient ingredient[]
   product    product[]
 }
