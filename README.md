@@ -1,6 +1,6 @@
-#GoodFood App
+##GoodFood App
 
-## Prerequisite
+### Prerequisite
 
 - Database name is `goodfood`
 
@@ -16,5 +16,5 @@
 id, lastname, firstname, email, password, phone, street, city, zipcode, region, country, restaurant_favorite_id, created_at, updated_at, role)
 VALUES (default, 'doe', 'john', 'john.doe@company.org', '$2y$10$aBKLQsWvUbvwFucpUwI.qebt33n0KtPEvsHFtoxi5dCZ5BAZ.Scmi', '123456789', '30th main street', 'Bruxelles', '12345', 'Region test', 'BELGIQUE', 1, '1970-01-01 08:00:00 America/Los_Angeles', '1970-01-01 08:00:00 America/Los_Angeles', 'ROLE_CUSTOMER');
 
-## :warning: You'll have to execute Restaurant script first due to foreign key constraint in Customer table
+## :warning: You'll have to execute Restaurant script first due to foreign key constraint in Customer table :warning:
 
