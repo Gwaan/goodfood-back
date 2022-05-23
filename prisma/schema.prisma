@@ -28,20 +28,20 @@ model article {
 
 model customer {
   id                     Int        @id @default(autoincrement())
-  lastname               String     @db.Char(255)
-  firstname              String     @db.Char(255)
-  email                  String     @db.Char(255)
-  password               String     @db.Char(255)
-  phone                  String     @db.Char(13)
-  new_mail               String?    @db.Char(255)
+  lastname               String     @db.VarChar(255)
+  firstname              String     @db.VarChar(255)
+  email                  String     @db.VarChar(255)
+  password               String     @db.VarChar(255)
+  phone                  String     @db.VarChar(13)
   street                 String     @db.VarChar
-  city                   String     @db.Char(255)
-  zipcode                String     @db.Char(13)
-  region                 String     @db.Char(255)
-  country                String     @db.Char(255)
+  city                   String     @db.VarChar(255)
+  zipcode                String     @db.VarChar(13)
+  region                 String     @db.VarChar(255)
+  country                String     @db.VarChar(255)
   restaurant_favorite_id Int        @default(autoincrement())
   created_at             DateTime   @db.Timestamptz(6)
   updated_at             DateTime?  @db.Timetz(6)
+  role                   String     @db.VarChar
   restaurant             restaurant @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
   order                  order[]
 }
@@ -177,10 +177,11 @@ model restaurant {
   email              String               @db.VarChar
   password           String               @db.VarChar
   street             String               @db.VarChar
-  city               String               @db.Char(255)
-  zipcode            String               @db.Char(13)
-  region             String               @db.Char(255)
-  country            String               @db.Char(255)
+  city               String               @db.VarChar(255)
+  zipcode            String               @db.VarChar(13)
+  region             String               @db.VarChar(255)
+  country            String               @db.VarChar(255)
+  role               String               @db.VarChar
   customer           customer[]
   order              order[]
   order_provider     order_provider[]
