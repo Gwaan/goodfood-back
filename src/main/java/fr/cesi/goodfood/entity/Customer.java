@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.entity;
 
-import fr.cesi.goodfood.entity.enums.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +24,10 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "last_name")
+    @Column(name = "firstname")
     private String lastName;
 
-    @Column(name = "first_name")
+    @Column(name = "lastname")
     private String firstName;
 
     private String email;
@@ -41,12 +40,12 @@ public class Customer {
 
     private String city;
 
-    @Column(name = "zip_code")
+    @Column(name = "zipcode")
     private String zipCode;
 
     private String region;
 
-    private Country country;
+    private String country;
 
     @OneToOne
     @JoinColumn(name = "restaurant_favorite_id")
@@ -57,6 +56,8 @@ public class Customer {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    private String role;
 
 
 }

@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.entity;
 
-import fr.cesi.goodfood.entity.enums.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +43,7 @@ public class Provider {
 
     private String region;
 
-    private Country country;
+    private String country;
 
     @ManyToMany
     @JoinTable(name = "provider_article",

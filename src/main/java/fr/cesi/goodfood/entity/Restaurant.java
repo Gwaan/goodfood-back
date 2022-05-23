@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.entity;
 
-import fr.cesi.goodfood.entity.enums.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,5 +48,7 @@ public class Restaurant {
                joinColumns = @JoinColumn(name = "restaurant_id"),
                inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productsSelled;
+
+    private String role;
 
 }

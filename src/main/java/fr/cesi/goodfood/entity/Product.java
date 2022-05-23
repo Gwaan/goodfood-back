@@ -1,6 +1,6 @@
 package fr.cesi.goodfood.entity;
 
-import fr.cesi.goodfood.entity.enums.Category;
+import fr.cesi.goodfood.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package fr.cesi.goodfood.entity.enums;
+package fr.cesi.goodfood.enums;
 
 public enum Country {
     FRANCE,
