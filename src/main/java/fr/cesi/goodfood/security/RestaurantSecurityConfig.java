@@ -27,7 +27,7 @@ public class RestaurantSecurityConfig extends WebSecurityConfigurerAdapter {
         http.antMatcher("/api/restaurant/**")
             .authorizeRequests()
             .anyRequest()
-            .authenticated()
+            .hasAuthority("ROLE_RESTAURANT")
             .and()
             .formLogin()
             .loginPage("/api/restaurant/login")
