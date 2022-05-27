@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@Order(1)
+@Order(2)
 @RequiredArgsConstructor
 public class RestaurantSecurityConfig extends WebSecurityConfigurerAdapter {
 

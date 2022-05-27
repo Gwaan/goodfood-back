@@ -20,8 +20,6 @@ public class CustomerService implements UserDetailsService {
 
     private final CustomerRepository customerRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("Searching for username: {}", email);
