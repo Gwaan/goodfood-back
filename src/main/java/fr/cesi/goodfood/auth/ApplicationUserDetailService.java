@@ -40,6 +40,6 @@ public class ApplicationUserDetailService implements UserDetailsService {
                                                                               authorities);
             }
         }
-        throw new UsernameNotFoundException(String.format("User not found"));
+        throw new UsernameNotFoundException("User not found");
     }
 }
