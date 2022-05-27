@@ -16,22 +16,9 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CustomerService implements UserDetailsService {
+public class CustomerService {
 
     private final CustomerRepository customerRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info("Searching for username: {}", email);
-        Customer customer = customerRepository.findCustomerByEmail(email);
-        if (customer == null) {
-            throw new UsernameNotFoundException("Customer not found in the database");
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(customer.getRole()));
-        return new org.springframework.security.core.userdetails.User(customer.getEmail(), customer.getPassword(),
-                                                                      authorities);
-    }
 
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);

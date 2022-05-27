@@ -24,7 +24,7 @@ public class AuthService {
                         , loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateToken(authentication);
-        return new JwtResponse(token);
+        return new JwtResponse(token, authentication.getAuthorities().toString());
     }
 
 

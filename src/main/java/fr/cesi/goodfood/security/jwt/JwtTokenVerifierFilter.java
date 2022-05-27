@@ -1,7 +1,7 @@
 package fr.cesi.goodfood.security.jwt;
 
 import com.google.common.base.Strings;
-import fr.cesi.goodfood.service.CustomerService;
+import fr.cesi.goodfood.auth.ApplicationUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JwtTokenVerifierFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-    private final CustomerService customerService;
+    private final ApplicationUserDetailService applicationUserDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -38,7 +38,7 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
         try {
             if (jwtUtils.validateJwtToken(token)) {
                 String username = jwtUtils.getUsernameFromJwtToken(token);
-                UserDetails userDetails = customerService.loadUserByUsername(username);
+                UserDetails userDetails = applicationUserDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

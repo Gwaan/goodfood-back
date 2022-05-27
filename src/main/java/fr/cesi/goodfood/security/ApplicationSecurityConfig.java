@@ -1,36 +1,35 @@
 package fr.cesi.goodfood.security;
 
+import fr.cesi.goodfood.auth.ApplicationUserDetailService;
 import fr.cesi.goodfood.security.jwt.JwtEntryPoint;
 import fr.cesi.goodfood.security.jwt.JwtTokenVerifierFilter;
-import fr.cesi.goodfood.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
 @RequiredArgsConstructor
-public class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomerService customerDetailService;
+    private final ApplicationUserDetailService applicationUserDetailService;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JwtEntryPoint jwtEntryPoint;
     private final JwtTokenVerifierFilter jwtTokenVerifierFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customerDetailService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(applicationUserDetailService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
@@ -42,7 +41,8 @@ public class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/api/auth/customer/login").permitAll()
+            .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+            .antMatchers("/api/auth/login").permitAll()
             .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenVerifierFilter, UsernamePasswordAuthenticationFilter.class);
