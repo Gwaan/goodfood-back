@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.controller;
 
+import fr.cesi.goodfood.payload.request.RegisterCustomerRequest;
 import fr.cesi.goodfood.payload.request.LoginRequest;
 import fr.cesi.goodfood.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginHandler(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
+    }
+
+    @PostMapping("/register/customer")
+    public ResponseEntity<?> registerCustomer(@RequestBody RegisterCustomerRequest registerCustomerRequest) {
+        return ResponseEntity.ok(authService.registerCustomer(registerCustomerRequest));
     }
 
 
