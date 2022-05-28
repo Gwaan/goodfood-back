@@ -13,21 +13,9 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public class RestaurantService implements UserDetailsService {
+public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Restaurant restaurant = restaurantRepository.findRestaurantByEmail(email);
-        if (restaurant == null) {
-            throw new UsernameNotFoundException("Restaurant not found in the database");
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(restaurant.getRole()));
-        return new org.springframework.security.core.userdetails.User(restaurant.getEmail(), restaurant.getPassword(),
-                                                                      authorities);
-    }
 
     public Restaurant saveRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
