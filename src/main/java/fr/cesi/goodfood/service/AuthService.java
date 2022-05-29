@@ -9,12 +9,14 @@ import fr.cesi.goodfood.payload.response.RegisterResponse;
 import fr.cesi.goodfood.repository.CustomerRepository;
 import fr.cesi.goodfood.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 
 @Service
@@ -36,6 +38,10 @@ public class AuthService {
     }
 
     public RegisterResponse registerCustomer(RegisterCustomerRequest registerCustomerRequest) {
+        if (customerRepository.existsCustomerByEmail(registerCustomerRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already existing"); //TODO: Controller
+            // advice
+        }
         Customer customer = new Customer();
         customer.setLastName(registerCustomerRequest.getLastName());
         customer.setFirstName(registerCustomerRequest.getFirstName());
