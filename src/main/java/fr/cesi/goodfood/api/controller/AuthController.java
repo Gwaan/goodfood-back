@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,7 +25,8 @@ public class AuthController {
 
     @PostMapping("/register/customer")
     public ResponseEntity<?> registerCustomer(@RequestBody RegisterCustomerRequest registerCustomerRequest) {
-        return ResponseEntity.ok(authService.registerCustomer(registerCustomerRequest));
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand().toUri()).body(authService.registerCustomer(
+                registerCustomerRequest));
     }
 
 

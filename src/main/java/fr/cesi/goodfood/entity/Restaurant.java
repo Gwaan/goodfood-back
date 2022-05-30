@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,7 @@ public class Restaurant {
     private List<Product> productsSelled;
 
     @OneToMany(mappedBy = "restaurant")
+    @JsonIgnore
     private List<Order> orders;
 
     private String role;
