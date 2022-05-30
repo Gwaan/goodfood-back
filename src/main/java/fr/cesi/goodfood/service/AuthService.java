@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.service;
 
+import fr.cesi.goodfood.api.exception.UserAlreadyExistingException;
 import fr.cesi.goodfood.entity.Customer;
 import fr.cesi.goodfood.enums.Roles;
 import fr.cesi.goodfood.payload.request.LoginRequest;
@@ -39,8 +40,7 @@ public class AuthService {
 
     public RegisterResponse registerCustomer(RegisterCustomerRequest registerCustomerRequest) {
         if (customerRepository.existsCustomerByEmail(registerCustomerRequest.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already existing"); //TODO: Controller
-            // advice
+            throw new UserAlreadyExistingException("User already existing in database");
         }
         Customer customer = new Customer();
         customer.setLastName(registerCustomerRequest.getLastName());

@@ -1,4 +1,4 @@
-package fr.cesi.goodfood.controller;
+package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.service.CustomerService;
 import lombok.RequiredArgsConstructor;

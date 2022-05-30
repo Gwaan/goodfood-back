@@ -1,4 +1,4 @@
-package fr.cesi.goodfood.controller;
+package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.payload.request.RegisterCustomerRequest;
 import fr.cesi.goodfood.payload.request.LoginRequest;
