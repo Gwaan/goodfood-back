@@ -50,10 +50,6 @@ public class Restaurant {
                inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productsSelled;
 
-    @OneToMany(mappedBy = "restaurant")
-    @JsonIgnore
-    private List<Order> orders;
-
     private String role;
 
 }

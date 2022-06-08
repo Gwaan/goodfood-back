@@ -40,7 +40,7 @@ public class Product {
 
     private String category;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "vat_id")
     private Vat vat;
 

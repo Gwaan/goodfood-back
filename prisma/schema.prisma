@@ -27,23 +27,23 @@ model article {
 }
 
 model customer {
-  id                     Int         @id @default(autoincrement())
-  lastname               String      @db.VarChar(255)
-  firstname              String      @db.VarChar(255)
-  email                  String      @db.VarChar(255)
-  password               String      @db.VarChar(255)
-  phone                  String      @db.VarChar(13)
-  street                 String      @db.VarChar
-  city                   String      @db.VarChar(255)
-  zipcode                String      @db.VarChar(13)
-  region                 String      @db.VarChar(255)
-  country                String      @db.VarChar(255)
-  restaurant_favorite_id Int?        @default(autoincrement())
-  created_at             DateTime    @db.Timetz(6)
-  updated_at             DateTime?   @db.Timetz(6)
-  role                   String      @db.VarChar
-  restaurant             restaurant? @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
-  order                  order[]
+  id                     Int              @id @default(autoincrement())
+  lastname               String           @db.VarChar(255)
+  firstname              String           @db.VarChar(255)
+  email                  String           @db.VarChar(255)
+  password               String           @db.VarChar(255)
+  phone                  String           @db.VarChar(13)
+  street                 String           @db.VarChar
+  city                   String           @db.VarChar(255)
+  zipcode                String           @db.VarChar(13)
+  region                 String           @db.VarChar(255)
+  country                String           @db.VarChar(255)
+  restaurant_favorite_id Int?             @default(autoincrement())
+  created_at             DateTime         @db.Timestamptz(6)
+  updated_at             DateTime?        @db.Timetz(6)
+  role                   String           @db.VarChar
+  restaurant             restaurant?      @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
+  customer_order         customer_order[]
 }
 
 model ingredient {
@@ -72,28 +72,12 @@ model ingredient_allergen {
   ingredient    ingredient @relation(fields: [ingredient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredientallergen_fk1")
 }
 
-model order {
-  id            Int             @id @default(autoincrement())
-  total_ttc     Decimal         @db.Decimal(5, 2)
-  is_payed      Boolean         @default(false)
-  created_at    DateTime        @db.Timestamptz(6)
-  updated_at    DateTime?       @db.Timetz(6)
-  payed_at      DateTime?       @db.Timetz(6)
-  customer_id   Int             @default(autoincrement())
-  restaurant_id Int             @default(autoincrement())
-  promo_code_id Int             @default(autoincrement())
-  customer      customer        @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk1")
-  promo_code    promo_code      @relation(fields: [promo_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk3")
-  restaurant    restaurant      @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk2")
-  order_product order_product[]
-}
-
 model order_product {
-  id         Int     @id(map: "orders_products_pkey") @default(autoincrement())
-  order_id   Int     @default(autoincrement())
-  product_id Int     @default(autoincrement())
-  order      order   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk1")
-  product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk2")
+  id             Int            @id(map: "orders_products_pkey") @default(autoincrement())
+  order_id       Int            @default(autoincrement())
+  product_id     Int            @default(autoincrement())
+  customer_order customer_order @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk1")
+  product        product        @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk2")
 }
 
 model order_provider {
@@ -139,13 +123,13 @@ model product_ingredient {
 }
 
 model promo_code {
-  id                  Int      @id @default(autoincrement())
-  code_key            String   @db.Char(18)
+  id                  Int              @id @default(autoincrement())
+  code_key            String           @db.Char(18)
   percentage_on_order Int
   is_active           Boolean
-  created_at          DateTime @db.Timestamptz(6)
-  end_at              DateTime @db.Timetz(6)
-  order               order[]
+  created_at          DateTime         @db.Timestamptz(6)
+  end_at              DateTime         @db.Timetz(6)
+  customer_order      customer_order[]
 }
 
 model provider {
@@ -183,7 +167,7 @@ model restaurant {
   country            String               @db.VarChar(255)
   role               String               @db.VarChar
   customer           customer[]
-  order              order[]
+  customer_order     customer_order[]
   order_provider     order_provider[]
   restaurant_product restaurant_product[]
 }
@@ -202,4 +186,21 @@ model vat {
   article    article[]
   ingredient ingredient[]
   product    product[]
+}
+
+model customer_order {
+  id            Int             @id(map: "order_pkey") @default(autoincrement())
+  total_ttc     Decimal         @db.Decimal(5, 2)
+  is_payed      Boolean         @default(false)
+  created_at    DateTime        @db.Timestamptz(6)
+  updated_at    DateTime?       @db.Timetz(6)
+  payed_at      DateTime?       @db.Timetz(6)
+  customer_id   Int             @default(autoincrement())
+  restaurant_id Int             @default(autoincrement())
+  promo_code_id Int             @default(autoincrement())
+  status        String          @db.VarChar
+  customer      customer        @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk1")
+  promo_code    promo_code      @relation(fields: [promo_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk3")
+  restaurant    restaurant      @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk2")
+  order_product order_product[]
 }
