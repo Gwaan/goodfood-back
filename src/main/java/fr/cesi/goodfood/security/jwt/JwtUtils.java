@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.User;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        UserDetails user = (UserDetails) authentication.getPrincipal();
         String token = JWT.create()
                           .withSubject(user.getUsername())
                           .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
