@@ -6,6 +6,7 @@ import fr.cesi.goodfood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +17,13 @@ import java.util.List;
 @RequestMapping("/api/restaurant")
 @PreAuthorize("hasRole('RESTAURANT')")
 @RequiredArgsConstructor
+@CrossOrigin
 public class RestaurantController extends AbstractController {
 
-    private final RestaurantService restaurantService;
     private final OrderService orderService;
 
     @GetMapping("/orders")
-    public ResponseEntity<List<RestaurantOrderResponse>> dashboard() {
+    public ResponseEntity<List<RestaurantOrderResponse>> getOrders() {
         return ResponseEntity.ok(orderService.getOrderFromRestaurantEmail(getUsernameFromPrincipal()));
     }
 

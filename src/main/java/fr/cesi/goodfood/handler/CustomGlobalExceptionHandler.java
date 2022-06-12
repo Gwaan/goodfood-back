@@ -1,6 +1,7 @@
 package fr.cesi.goodfood.handler;
 
 import fr.cesi.goodfood.api.exception.UserAlreadyExistingException;
+import fr.cesi.goodfood.api.exception.ZipCodeNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(UserAlreadyExistingException.class)
     public ResponseEntity<Map<String, Object>> handleException(UserAlreadyExistingException e) {
-        LOGGER.error(e.getMessage());
+        LOGGER.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ZipCodeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(ZipCodeNotFoundException e) {
+        LOGGER.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 }

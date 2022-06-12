@@ -14,6 +14,7 @@ public class CustomerDto {
     private String street;
     private String city;
     private String region;
+    private String zipCode;
     private String country;
 
 }

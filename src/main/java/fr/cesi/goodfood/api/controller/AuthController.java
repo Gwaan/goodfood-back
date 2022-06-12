@@ -2,9 +2,11 @@ package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.payload.request.RegisterCustomerRequest;
 import fr.cesi.goodfood.payload.request.LoginRequest;
+import fr.cesi.goodfood.payload.response.JwtResponse;
 import fr.cesi.goodfood.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginHandler(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> loginHandler(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 
@@ -30,6 +32,5 @@ public class AuthController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand().toUri()).body(authService.registerCustomer(
                 registerCustomerRequest));
     }
-
 
 }
