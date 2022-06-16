@@ -2,10 +2,12 @@ package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.dto.RestaurantDto;
 import fr.cesi.goodfood.entity.Customer;
+import fr.cesi.goodfood.payload.request.OrderRequest;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
 import fr.cesi.goodfood.service.CustomerService;
+import fr.cesi.goodfood.service.OrderService;
 import fr.cesi.goodfood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ public class CustomerController extends AbstractController {
 
     private final CustomerService customerService;
     private final RestaurantService restaurantService;
+    private final OrderService orderService;
 
     @PutMapping()
     public ResponseEntity<Customer> updateCustomer(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
@@ -47,8 +50,15 @@ public class CustomerController extends AbstractController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<Void> setFavoriteRestaurant(@RequestBody SetFavoriteRestaurantRequest setFavoriteRestaurantRequest) {
+    public ResponseEntity<Void> setFavoriteRestaurant(
+            @RequestBody SetFavoriteRestaurantRequest setFavoriteRestaurantRequest) {
         customerService.setFavoriteRestaurant(setFavoriteRestaurantRequest, getUsernameFromPrincipal());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<Void> setOrder(@RequestBody OrderRequest orderRequest) {
+        orderService.saveOrder(orderRequest, getUsernameFromPrincipal());
         return ResponseEntity.ok().build();
     }
 

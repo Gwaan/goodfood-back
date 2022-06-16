@@ -1,6 +1,8 @@
 package fr.cesi.goodfood.handler;
 
 import fr.cesi.goodfood.api.exception.CustomerNotFoundException;
+import fr.cesi.goodfood.api.exception.ProductNotFoundException;
+import fr.cesi.goodfood.api.exception.PromoCodeNotFoundException;
 import fr.cesi.goodfood.api.exception.RestaurantNotFoundException;
 import fr.cesi.goodfood.api.exception.UserAlreadyExistingException;
 import fr.cesi.goodfood.api.exception.ZipCodeNotFoundException;
@@ -47,6 +49,22 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(RestaurantNotFoundException e) {
+        LOGGER.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PromoCodeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(PromoCodeNotFoundException e) {
+        LOGGER.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(ProductNotFoundException e) {
         LOGGER.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());

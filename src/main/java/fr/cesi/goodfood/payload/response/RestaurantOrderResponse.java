@@ -19,7 +19,7 @@ public class RestaurantOrderResponse {
     @JsonProperty("customer")
     private CustomerDto customerDto;
     private String status;
-    @JsonProperty("restaurantProducts")
+    @JsonProperty("productsSelled")
     List<ProductRestaurantDto> productRestaurantDtos;
 
 }
