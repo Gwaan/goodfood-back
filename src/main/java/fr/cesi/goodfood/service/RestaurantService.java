@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.service;
 
+import fr.cesi.goodfood.api.exception.RestaurantNotFoundException;
 import fr.cesi.goodfood.api.exception.ZipCodeNotFoundException;
 import fr.cesi.goodfood.dto.RestaurantDto;
 import fr.cesi.goodfood.entity.Restaurant;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +17,9 @@ public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
-    public Restaurant saveRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+    public Restaurant getRestaurantById(Integer id) {
+        return restaurantRepository.findById(id)
+                                   .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found"));
     }
 
     public List<RestaurantDto> findRestaurantsByZipCode(String zipCode) {

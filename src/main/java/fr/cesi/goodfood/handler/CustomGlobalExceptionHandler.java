@@ -1,5 +1,7 @@
 package fr.cesi.goodfood.handler;
 
+import fr.cesi.goodfood.api.exception.CustomerNotFoundException;
+import fr.cesi.goodfood.api.exception.RestaurantNotFoundException;
 import fr.cesi.goodfood.api.exception.UserAlreadyExistingException;
 import fr.cesi.goodfood.api.exception.ZipCodeNotFoundException;
 import org.slf4j.Logger;
@@ -29,6 +31,22 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(ZipCodeNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(ZipCodeNotFoundException e) {
+        LOGGER.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(CustomerNotFoundException e) {
+        LOGGER.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(RestaurantNotFoundException e) {
         LOGGER.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());

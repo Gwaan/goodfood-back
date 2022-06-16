@@ -43,14 +43,8 @@ public class Ingredient {
 
     private BigDecimal price;
 
-    private int quantity;
-
     @Column(name = "path_picture")
     private String picture;
-
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "vat_id")
-    private Vat vat;
 
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "ingredient_allergen",

@@ -12,6 +12,5 @@ public class ProductRestaurantDto {
     private BigDecimal price;
     private String description;
     private String category;
-    private double vat;
 
 }

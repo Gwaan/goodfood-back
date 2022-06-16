@@ -15,7 +15,6 @@ public interface ProductMapper {
     @Mapping(source = "price", target = "price")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "category", target = "category")
-    @Mapping(target = "vat", ignore = true)
     ProductRestaurantDto map(Product product);
 
 

@@ -11,13 +11,14 @@ public interface RestaurantMapper {
 
     RestaurantMapper INSTANCE = Mappers.getMapper(RestaurantMapper.class);
 
-    @Mapping(source="name", target = "name")
-    @Mapping(source="email", target = "email")
-    @Mapping(source="street", target = "street")
-    @Mapping(source="city", target = "city")
-    @Mapping(source="zipCode", target = "zipCode")
-    @Mapping(source="region", target = "region")
-    @Mapping(source="country", target = "country")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "street", target = "street")
+    @Mapping(source = "city", target = "city")
+    @Mapping(source = "zipCode", target = "zipCode")
+    @Mapping(source = "region", target = "region")
+    @Mapping(source = "country", target = "country")
     RestaurantDto map(Restaurant restaurant);
 
 }

@@ -16,5 +16,6 @@ public class CustomerDto {
     private String region;
     private String zipCode;
     private String country;
+    private RestaurantDto favoriteRestaurant;
 
 }

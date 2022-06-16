@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vat {
+public class VatFee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

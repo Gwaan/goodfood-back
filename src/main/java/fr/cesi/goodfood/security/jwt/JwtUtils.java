@@ -34,10 +34,8 @@ public class JwtUtils {
                           .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
                           .withIssuedAt(new Date())
                           .withClaim("roles",
-                                     user.getAuthorities().stream().map(
-                                                 GrantedAuthority::getAuthority)
-                                         .collect(
-                                                 Collectors.toList()))
+                                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                                         .collect(Collectors.toList()))
                           .sign(getJwtAlgorithm());
         return token;
     }
@@ -46,10 +44,6 @@ public class JwtUtils {
         JWTVerifier verifier = JWT.require(getJwtAlgorithm()).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         return decodedJWT.getSubject();
-    }
-
-    private Algorithm getJwtAlgorithm() {
-        return Algorithm.HMAC256(jwtSecret.getBytes());
     }
 
     public boolean validateJwtToken(String authToken) {
@@ -61,5 +55,9 @@ public class JwtUtils {
             LOGGER.error("Failed to verify JWT Token", e.getMessage());
         }
         return false;
+    }
+
+    private Algorithm getJwtAlgorithm() {
+        return Algorithm.HMAC256(jwtSecret.getBytes());
     }
 }

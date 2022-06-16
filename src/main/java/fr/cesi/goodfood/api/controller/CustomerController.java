@@ -2,6 +2,7 @@ package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.dto.RestaurantDto;
 import fr.cesi.goodfood.entity.Customer;
+import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
 import fr.cesi.goodfood.service.CustomerService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +42,14 @@ public class CustomerController extends AbstractController {
     }
 
     @GetMapping("/restaurants")
-    public ResponseEntity<List<RestaurantDto>> getRestaurantsByZipCode(){
+    public ResponseEntity<List<RestaurantDto>> getRestaurantsByZipCode() {
         return ResponseEntity.ok(restaurantService.findRestaurantsByZipCode(getZipCodeFromPrincipalCustomer()));
     }
+
+    @PostMapping("/restaurants")
+    public ResponseEntity<Void> setFavoriteRestaurant(@RequestBody SetFavoriteRestaurantRequest setFavoriteRestaurantRequest) {
+        customerService.setFavoriteRestaurant(setFavoriteRestaurantRequest, getUsernameFromPrincipal());
+        return ResponseEntity.ok().build();
+    }
+
 }

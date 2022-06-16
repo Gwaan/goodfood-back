@@ -25,7 +25,6 @@ public class OrderService {
             List<ProductRestaurantDto> productRestaurantDtos = new ArrayList<>();
             order.getProducts().forEach(product -> {
                 ProductRestaurantDto productRestaurantDto = ProductMapper.INSTANCE.map(product);
-                productRestaurantDto.setVat(20.00);
                 productRestaurantDtos.add(productRestaurantDto);
             });
             restaurantOrderResponse.setTotalTTC(order.getTotalTTC());

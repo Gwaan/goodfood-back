@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +54,10 @@ public class Restaurant implements UserDetails {
                joinColumns = @JoinColumn(name = "restaurant_id"),
                inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productsSelled;
+
+    @OneToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 
     private String role;
 

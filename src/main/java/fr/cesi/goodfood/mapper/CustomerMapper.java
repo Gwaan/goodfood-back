@@ -21,6 +21,7 @@ public interface CustomerMapper {
     @Mapping(source = "region", target = "region")
     @Mapping(source = "country", target = "country")
     @Mapping(source = "zipCode", target = "zipCode")
+    @Mapping(source = "favoriteRestaurant", target = "favoriteRestaurant")
     CustomerDto map(Customer customer);
 
 }

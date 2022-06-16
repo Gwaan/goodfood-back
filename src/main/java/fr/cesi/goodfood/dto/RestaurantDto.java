@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class RestaurantDto {
 
+    private Integer id;
+
     private String name;
 
     private String email;
