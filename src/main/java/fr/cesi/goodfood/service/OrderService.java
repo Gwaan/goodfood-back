@@ -79,7 +79,6 @@ public class OrderService {
         order.setPayedAt(LocalDateTime.now());
         order.setCustomer(customer);
         order.setRestaurant(customer.getFavoriteRestaurant());
-        order.setPromoCode(order.getPromoCode());
         order.setProducts(products);
         order.setStatus(OrderStatus.FINISHED.toString());
         orderRepository.save(order);
