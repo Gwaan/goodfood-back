@@ -6,22 +6,18 @@ import fr.cesi.goodfood.payload.response.JwtResponse;
 import fr.cesi.goodfood.payload.response.RegisterResponse;
 import fr.cesi.goodfood.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -63,7 +59,7 @@ public class AuthController {
                                                        schema =
                                                        @Schema(defaultValue = "User already existing in database")))})
     @PostMapping("/register/customer")
-    public ResponseEntity<?> registerCustomer(
+    public ResponseEntity<RegisterResponse> registerCustomer(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Informations du client à enregistrer",
                                                                   content = @Content(schema = @Schema(implementation
                                                                           = RegisterCustomerRequest.class)))

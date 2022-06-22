@@ -12,14 +12,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.User;
 import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${goodfood.app.jwtSecret}")
     private String jwtSecret;
@@ -29,7 +28,7 @@ public class JwtUtils {
 
     public String generateToken(Authentication authentication) {
         UserDetails user = (UserDetails) authentication.getPrincipal();
-        String token = JWT.create()
+        return JWT.create()
                           .withSubject(user.getUsername())
                           .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
                           .withIssuedAt(new Date())
@@ -37,7 +36,6 @@ public class JwtUtils {
                                      user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                                          .collect(Collectors.toList()))
                           .sign(getJwtAlgorithm());
-        return token;
     }
 
     public String getUsernameFromJwtToken(String token) {
@@ -49,10 +47,10 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             JWTVerifier verifier = JWT.require(getJwtAlgorithm()).build();
-            DecodedJWT decodedJWT = verifier.verify(authToken);
+            verifier.verify(authToken);
             return true;
         } catch (JWTVerificationException e) {
-            LOGGER.error("Failed to verify JWT Token", e.getMessage());
+            LOG.error("Failed to verify JWT Token", e.getMessage());
         }
         return false;
     }

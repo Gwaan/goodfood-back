@@ -5,7 +5,6 @@ import fr.cesi.goodfood.entity.Restaurant;
 import fr.cesi.goodfood.repository.CustomerRepository;
 import fr.cesi.goodfood.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

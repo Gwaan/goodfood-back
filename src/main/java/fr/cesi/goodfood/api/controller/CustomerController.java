@@ -2,13 +2,10 @@ package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.dto.CustomerDto;
 import fr.cesi.goodfood.dto.RestaurantDto;
-import fr.cesi.goodfood.entity.Customer;
-import fr.cesi.goodfood.payload.request.LoginRequest;
 import fr.cesi.goodfood.payload.request.OrderRequest;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
-import fr.cesi.goodfood.payload.response.JwtResponse;
 import fr.cesi.goodfood.service.CustomerService;
 import fr.cesi.goodfood.service.OrderService;
 import fr.cesi.goodfood.service.RestaurantService;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

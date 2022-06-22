@@ -5,7 +5,6 @@ import fr.cesi.goodfood.entity.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Mapper
 public interface CustomerMapper {

@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.security;
 
-import fr.cesi.goodfood.auth.ApplicationUserDetailService;
 import fr.cesi.goodfood.security.jwt.JwtEntryPoint;
 import fr.cesi.goodfood.security.jwt.JwtTokenVerifierFilter;
 import lombok.RequiredArgsConstructor;
