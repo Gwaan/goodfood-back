@@ -28,16 +28,12 @@ public class ApplicationUserDetailService implements UserDetailsService {
         Optional<Customer> customer = customerRepository.findCustomerByEmail(username);
         if (customer.isPresent()) {
             authorities.add(new SimpleGrantedAuthority(customer.get().getRole()));
-            return new org.springframework.security.core.userdetails.User(customer.get().getEmail(),
-                                                                          customer.get().getPassword(),
-                                                                          authorities);
+            return customer.get();
         } else {
             Optional<Restaurant> restaurant = restaurantRepository.findRestaurantByEmail(username);
             if (restaurant.isPresent()) {
                 authorities.add(new SimpleGrantedAuthority(restaurant.get().getRole()));
-                return new org.springframework.security.core.userdetails.User(restaurant.get().getEmail(),
-                                                                              restaurant.get().getPassword(),
-                                                                              authorities);
+                return restaurant.get();
             }
         }
         throw new UsernameNotFoundException("User not found");

@@ -14,36 +14,34 @@ model allergen {
 }
 
 model article {
-  id                     Int                      @id(map: "articles_pkey") @default(autoincrement())
-  name                   String                   @db.Char(50)
-  description            String?                  @db.VarChar
-  price                  Decimal                  @db.Decimal(5, 2)
-  quantity               Int                      @default(autoincrement())
-  path_picture           String?                  @db.VarChar
-  vat_id                 Int                      @default(autoincrement())
-  vat                    vat                      @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_fk1")
-  order_provider_article order_provider_article[]
-  provider_article       provider_article[]
+  id               Int                @id(map: "articles_pkey") @default(autoincrement())
+  name             String             @db.Char(50)
+  description      String?            @db.VarChar
+  price_ht         Decimal            @db.Decimal(5, 2)
+  quantity         Int                @default(autoincrement())
+  path_picture     String?            @db.VarChar
+  is_packaged      Boolean
+  supplier_article supplier_article[]
 }
 
 model customer {
-  id                     Int         @id @default(autoincrement())
-  lastname               String      @db.VarChar(255)
-  firstname              String      @db.VarChar(255)
-  email                  String      @db.VarChar(255)
-  password               String      @db.VarChar(255)
-  phone                  String      @db.VarChar(13)
-  street                 String      @db.VarChar
-  city                   String      @db.VarChar(255)
-  zipcode                String      @db.VarChar(13)
-  region                 String      @db.VarChar(255)
-  country                String      @db.VarChar(255)
-  restaurant_favorite_id Int?        @default(autoincrement())
-  created_at             DateTime    @db.Timetz(6)
-  updated_at             DateTime?   @db.Timetz(6)
-  role                   String      @db.VarChar
-  restaurant             restaurant? @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
-  order                  order[]
+  id                     Int              @id @default(autoincrement())
+  lastname               String           @db.VarChar(255)
+  firstname              String           @db.VarChar(255)
+  email                  String           @db.VarChar(255)
+  password               String           @db.VarChar(255)
+  phone                  String           @db.VarChar(13)
+  street                 String           @db.VarChar
+  city                   String           @db.VarChar(255)
+  zipcode                String           @db.VarChar(13)
+  region                 String           @db.VarChar(255)
+  country                String           @db.VarChar(255)
+  restaurant_favorite_id Int?             @default(autoincrement())
+  created_at             DateTime         @db.Timestamptz(6)
+  updated_at             DateTime?        @db.Timetz(6)
+  role                   String           @db.VarChar
+  restaurant             restaurant?      @relation(fields: [restaurant_favorite_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_fk1")
+  customer_order         customer_order[]
 }
 
 model ingredient {
@@ -54,14 +52,9 @@ model ingredient {
   is_vegan_friendly   Boolean
   description         String                @db.VarChar
   price               Decimal               @db.Decimal(5, 2)
-  quantity            Int
   path_picture        String?               @db.VarChar
-  vat_id              Int
-  vat                 vat                   @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredients_fk1")
   ingredient_allergen ingredient_allergen[]
   product_ingredient  product_ingredient[]
-
-  @@index([vat_id], map: "fki_ingredients_fk1")
 }
 
 model ingredient_allergen {
@@ -72,47 +65,12 @@ model ingredient_allergen {
   ingredient    ingredient @relation(fields: [ingredient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ingredientallergen_fk1")
 }
 
-model order {
-  id            Int             @id @default(autoincrement())
-  total_ttc     Decimal         @db.Decimal(5, 2)
-  is_payed      Boolean         @default(false)
-  created_at    DateTime        @db.Timestamptz(6)
-  updated_at    DateTime?       @db.Timetz(6)
-  payed_at      DateTime?       @db.Timetz(6)
-  customer_id   Int             @default(autoincrement())
-  restaurant_id Int             @default(autoincrement())
-  promo_code_id Int             @default(autoincrement())
-  customer      customer        @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk1")
-  promo_code    promo_code      @relation(fields: [promo_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk3")
-  restaurant    restaurant      @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk2")
-  order_product order_product[]
-}
-
 model order_product {
-  id         Int     @id(map: "orders_products_pkey") @default(autoincrement())
-  order_id   Int     @default(autoincrement())
-  product_id Int     @default(autoincrement())
-  order      order   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk1")
-  product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk2")
-}
-
-model order_provider {
-  id                     Int                      @id(map: "orders_providers_pkey") @default(autoincrement())
-  total_ttc              Decimal                  @db.Decimal(3, 2)
-  is_payed               Boolean                  @default(false)
-  restaurant_id          Int                      @default(autoincrement())
-  provider_id            Int                      @default(autoincrement())
-  provider               provider                 @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderprovider_fk2")
-  restaurant             restaurant               @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderprovider_fk1")
-  order_provider_article order_provider_article[]
-}
-
-model order_provider_article {
-  id                Int            @id(map: "orders_providers_articles_pkey") @default(autoincrement())
-  order_provider_id Int            @default(autoincrement())
-  article_id        Int            @default(autoincrement())
-  article           article        @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproviderarticle_fk2")
-  order_provider    order_provider @relation(fields: [order_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproviderarticle_fk1")
+  id             Int            @id(map: "orders_products_pkey") @default(autoincrement())
+  order_id       Int            @default(autoincrement())
+  product_id     Int            @default(autoincrement())
+  customer_order customer_order @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk1")
+  product        product        @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orderproduct_fk2")
 }
 
 model product {
@@ -121,10 +79,8 @@ model product {
   price              Decimal              @db.Decimal(5, 2)
   path_picture       String?              @db.VarChar
   description        String               @db.VarChar
-  vat_id             Int                  @default(autoincrement())
   is_on_sale         Boolean
   category           String               @db.VarChar
-  vat                vat                  @relation(fields: [vat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_fk2")
   order_product      order_product[]
   product_ingredient product_ingredient[]
   restaurant_product restaurant_product[]
@@ -139,36 +95,13 @@ model product_ingredient {
 }
 
 model promo_code {
-  id                  Int      @id @default(autoincrement())
-  code_key            String   @db.Char(18)
+  id                  Int              @id @default(autoincrement())
+  code_key            String           @db.Char(18)
   percentage_on_order Int
   is_active           Boolean
-  created_at          DateTime @db.Timestamptz(6)
-  end_at              DateTime @db.Timetz(6)
-  order               order[]
-}
-
-model provider {
-  id               Int                @id(map: "providers_pkey") @default(autoincrement())
-  name             String             @db.VarChar
-  ref              String?            @db.VarChar
-  email            String?            @db.VarChar
-  phone            String?            @db.Char(13)
-  street           String             @db.VarChar
-  city             String             @db.Char(255)
-  zipcode          String             @db.Char(13)
-  region           String             @db.Char(255)
-  country          String             @db.Char(255)
-  order_provider   order_provider[]
-  provider_article provider_article[]
-}
-
-model provider_article {
-  id          Int      @id(map: "providers_articles_pkey") @default(autoincrement())
-  provider_id Int      @default(autoincrement())
-  article_id  Int      @default(autoincrement())
-  article     article  @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk2")
-  provider    provider @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk1")
+  created_at          DateTime         @db.Timestamptz(6)
+  end_at              DateTime         @db.Timetz(6)
+  customer_order      customer_order[]
 }
 
 model restaurant {
@@ -182,9 +115,10 @@ model restaurant {
   region             String               @db.VarChar(255)
   country            String               @db.VarChar(255)
   role               String               @db.VarChar
+  supplier_id        Int
+  supplier           supplier             @relation(fields: [supplier_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "supplier_id")
   customer           customer[]
-  order              order[]
-  order_provider     order_provider[]
+  customer_order     customer_order[]
   restaurant_product restaurant_product[]
 }
 
@@ -197,9 +131,45 @@ model restaurant_product {
 }
 
 model vat {
-  id         Int          @id @default(autoincrement())
-  percentage Decimal      @db.Decimal(5, 2)
-  article    article[]
-  ingredient ingredient[]
-  product    product[]
+  id         Int     @id @default(autoincrement())
+  percentage Decimal @db.Decimal(5, 2)
+}
+
+model customer_order {
+  id            Int             @id(map: "order_pkey") @default(autoincrement())
+  total_ttc     Decimal         @db.Decimal(5, 2)
+  is_payed      Boolean         @default(false)
+  created_at    DateTime        @db.Timestamptz(6)
+  updated_at    DateTime?       @db.Timetz(6)
+  payed_at      DateTime?       @db.Timetz(6)
+  customer_id   Int             @default(autoincrement())
+  restaurant_id Int             @default(autoincrement())
+  promo_code_id Int?            @default(autoincrement())
+  status        String          @db.VarChar
+  customer      customer        @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk1")
+  promo_code    promo_code?     @relation(fields: [promo_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk3")
+  restaurant    restaurant      @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_fk2")
+  order_product order_product[]
+}
+
+model supplier {
+  id               Int                @id(map: "providers_pkey") @default(autoincrement())
+  name             String             @db.VarChar
+  email            String?            @db.VarChar
+  phone            String?            @db.Char(13)
+  street           String             @db.VarChar
+  city             String             @db.Char(255)
+  zipcode          String             @db.Char(13)
+  region           String             @db.Char(255)
+  country          String             @db.Char(255)
+  restaurant       restaurant[]
+  supplier_article supplier_article[]
+}
+
+model supplier_article {
+  id          Int      @id(map: "providers_articles_pkey") @default(autoincrement())
+  supplier_id Int      @default(autoincrement())
+  article_id  Int      @default(autoincrement())
+  article     article  @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk2")
+  supplier    supplier @relation(fields: [supplier_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providerarticle_fk1")
 }

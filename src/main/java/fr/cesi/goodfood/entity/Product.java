@@ -40,10 +40,6 @@ public class Product {
 
     private String category;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vat_id")
-    private Vat vat;
-
     @Column(name = "is_on_sale")
     private boolean isOnSale;
 

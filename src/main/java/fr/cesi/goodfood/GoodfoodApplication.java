@@ -20,6 +20,6 @@ public class GoodfoodApplication {
         SpringApplication.run(GoodfoodApplication.class, args);
     }
 
-    }
+}
 
 
