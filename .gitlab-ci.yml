@@ -16,4 +16,4 @@ maven-build-stage:
 
 maven-test-stage:
   stage: test
-  script: mvn test -Djasypt.encryptor.password=Ces!123
+  script: mvn test -Dspring.profiles.active=test -Djasypt.encryptor.password=Ces!123
