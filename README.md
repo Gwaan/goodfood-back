@@ -11,3 +11,5 @@
 `Password for customers accounts is their first name in lower, e.g: john`
 
 `Password for restaurants accounts is their country in lower, e.g: belgium`
+
+- Swagger documentation can be accessed at: `http://localhost:8090/swagger-ui/index.html`

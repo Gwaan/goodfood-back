@@ -1,8 +1,10 @@
 package fr.cesi.goodfood.service;
 
 import fr.cesi.goodfood.api.exception.CustomerNotFoundException;
+import fr.cesi.goodfood.dto.CustomerDto;
 import fr.cesi.goodfood.entity.Customer;
 import fr.cesi.goodfood.entity.Restaurant;
+import fr.cesi.goodfood.mapper.CustomerMapper;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
@@ -29,7 +31,7 @@ public class CustomerService {
                                  .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
     }
 
-    public Customer updateCustomer(UpdateCustomerRequest updateCustomerRequest, String username) {
+    public CustomerDto updateCustomer(UpdateCustomerRequest updateCustomerRequest, String username) {
         Customer customerToUpdate =
                 customerRepository.findCustomerByEmail(username).orElseThrow(() -> new CustomerNotFoundException(
                         "Customer not found"));
@@ -43,7 +45,7 @@ public class CustomerService {
         customerToUpdate.setCountry(updateCustomerRequest.getCountry());
         customerToUpdate.setUpdatedAt(LocalDateTime.now());
         Customer customerUpdated = saveCustomer(customerToUpdate);
-        return customerUpdated;
+        return CustomerMapper.INSTANCE.map(customerUpdated);
     }
 
     public void updateCustomerPassword(UpdateCustomerPasswordRequest updateCustomerPasswordRequest, String username) {
