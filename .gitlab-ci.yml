@@ -7,8 +7,13 @@ cache:
     - .m2/repository/
 stages:
     - build
+    - test
 
 
 maven-build-stage:
     stage: build
     script: mvn clean -DskipTests
+
+maven-test-stage:
+  stage: test
+  script: mvn test -Djasypt.encryptor.password=Ces!123
