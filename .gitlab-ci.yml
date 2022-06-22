@@ -11,4 +11,4 @@ stages:
 
 maven-build-stage:
     stage: build
-    script: mvn clean $MAVEN_CLI_OPTS $MAVEN_OPTS deploy -DskipTests
+    script: mvn clean -DskipTests
