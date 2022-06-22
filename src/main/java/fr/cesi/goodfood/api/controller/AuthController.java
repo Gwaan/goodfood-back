@@ -6,6 +6,7 @@ import fr.cesi.goodfood.payload.response.JwtResponse;
 import fr.cesi.goodfood.payload.response.RegisterResponse;
 import fr.cesi.goodfood.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,14 +39,12 @@ public class AuthController {
                                          description = "Réponse en cas de succès de l'authentification",
                                          content = @Content(mediaType = "application/json",
                                                             schema = @Schema(implementation =
-                                                                    JwtResponse.class))),
-                       @ApiResponse(responseCode = "401",
-                                    description = "Si le token fourni est invalide",
-                                    content = @Content(mediaType = "application/json",
-                                                       schema = @Schema(defaultValue
-                                                               = "Unauthorized")))})
+                                                                    JwtResponse.class)))})
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> loginHandler(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Nom d'utilisateur et mot de passe",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = LoginRequest.class)))
             @RequestBody
                     LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
@@ -62,14 +61,12 @@ public class AuthController {
                                     description = "Si le code promo n'est pas trouvé",
                                     content = @Content(mediaType = "application/json",
                                                        schema =
-                                                       @Schema(defaultValue = "User already existing in database"))),
-                       @ApiResponse(responseCode = "401",
-                                    description = "Si le token fourni est invalide",
-                                    content = @Content(mediaType = "application/json",
-                                                       schema = @Schema(defaultValue
-                                                               = "Unauthorized")))})
+                                                       @Schema(defaultValue = "User already existing in database")))})
     @PostMapping("/register/customer")
     public ResponseEntity<?> registerCustomer(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Informations du client à enregistrer",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = RegisterCustomerRequest.class)))
             @RequestBody
                     RegisterCustomerRequest registerCustomerRequest) {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand().toUri())

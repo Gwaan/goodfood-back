@@ -3,6 +3,7 @@ package fr.cesi.goodfood.api.controller;
 import fr.cesi.goodfood.dto.CustomerDto;
 import fr.cesi.goodfood.dto.RestaurantDto;
 import fr.cesi.goodfood.entity.Customer;
+import fr.cesi.goodfood.payload.request.LoginRequest;
 import fr.cesi.goodfood.payload.request.OrderRequest;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,7 @@ public class CustomerController extends AbstractController {
 
     @Operation(summary = "Mise à jour client",
                tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
                                          description = "Réponse en cas de succès de la mise à jour du client",
                                          content = @Content(mediaType = "application/json",
@@ -57,6 +60,9 @@ public class CustomerController extends AbstractController {
                                                                = "Unauthorized")))})
     @PutMapping()
     public ResponseEntity<CustomerDto> updateCustomer(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Informations du client à mettre à jour",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = UpdateCustomerRequest.class)))
             @RequestBody
                     UpdateCustomerRequest updateCustomerRequest) {
         return ResponseEntity.ok(customerService.updateCustomer(updateCustomerRequest, getUsernameFromPrincipal()));
@@ -64,7 +70,8 @@ public class CustomerController extends AbstractController {
 
     @Operation(summary = "Mise à jour mot de passe client",
                tags = "Client",
-               responses = {@ApiResponse(responseCode = "200",
+               security = @SecurityRequirement(name = "bearerAuth"),
+               responses = {@ApiResponse(responseCode = "204",
                                          description = "Réponse en cas de succès de la mise à jour du mot de passe client",
                                          content = @Content),
                        @ApiResponse(responseCode = "401",
@@ -74,6 +81,9 @@ public class CustomerController extends AbstractController {
                                                                = "Unauthorized")))})
     @PutMapping("/password")
     public ResponseEntity<Void> updateCustomerPassword(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Mot de passe du client à mettre à jour",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = UpdateCustomerPasswordRequest.class)))
             @RequestBody
                     UpdateCustomerPasswordRequest updateCustomerPasswordRequest) {
         customerService.updateCustomerPassword(updateCustomerPasswordRequest, getUsernameFromPrincipal());
@@ -82,12 +92,13 @@ public class CustomerController extends AbstractController {
 
     @Operation(summary = "Trouver tous les restaurants ayant le même code postal que le client",
                tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
                                          description = "Réponse en cas de la récupération des codes postaux",
-                                         content = {@Content(mediaType = "application/json",
-                                                             array =
-                                                             @ArraySchema(schema = @Schema(implementation =
-                                                                     RestaurantDto.class)))}),
+                                         content = @Content(mediaType = "application/json",
+                                                            array =
+                                                            @ArraySchema(schema = @Schema(implementation =
+                                                                    RestaurantDto.class)))),
                        @ApiResponse(responseCode = "404",
                                     description = "Si aucun restaurant n'est trouvé en fonction du code postal",
                                     content = @Content(mediaType = "application/json",
@@ -104,6 +115,7 @@ public class CustomerController extends AbstractController {
 
     @Operation(summary = "Définir le restaurant favori du client",
                tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
                                          description = "Réponse en cas de succès de la définition du restaurant",
                                          content = @Content),
@@ -114,6 +126,9 @@ public class CustomerController extends AbstractController {
                                                                = "Unauthorized")))})
     @PostMapping("/restaurants")
     public ResponseEntity<Void> setFavoriteRestaurant(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Id du nouveau restaurant favori",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = SetFavoriteRestaurantRequest.class)))
             @RequestBody
                     SetFavoriteRestaurantRequest setFavoriteRestaurantRequest) {
         customerService.setFavoriteRestaurant(setFavoriteRestaurantRequest, getUsernameFromPrincipal());
@@ -122,6 +137,7 @@ public class CustomerController extends AbstractController {
 
     @Operation(summary = "Poster la commande d'un client",
                tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
                                          description = "Réponse en cas de succès du post de la commande d'un client",
                                          content = @Content),
@@ -137,6 +153,9 @@ public class CustomerController extends AbstractController {
                                                                = "Unauthorized")))})
     @PostMapping("/order")
     public ResponseEntity<Void> setOrder(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Commande à poster",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = OrderRequest.class)))
             @RequestBody
                     OrderRequest orderRequest) {
         orderService.saveOrder(orderRequest, getUsernameFromPrincipal());

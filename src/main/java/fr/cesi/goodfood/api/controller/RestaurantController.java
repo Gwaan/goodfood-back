@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.api.controller;
 
+import fr.cesi.goodfood.dto.RestaurantDto;
 import fr.cesi.goodfood.entity.Customer;
 import fr.cesi.goodfood.payload.response.RestaurantOrderResponse;
 import fr.cesi.goodfood.service.OrderService;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +36,13 @@ public class RestaurantController extends AbstractController {
 
     @Operation(summary = "Récupérer toutes les commandes d'un restaurant",
                tags = "Restaurant",
+               security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
                                          description = "Réponse en cas de succès de la récupération des commandes",
-                                         content = @Content),
+                                         content = @Content(mediaType = "application/json",
+                                                            array =
+                                                            @ArraySchema(schema = @Schema(implementation =
+                                                                    RestaurantOrderResponse.class)))),
                        @ApiResponse(responseCode = "401",
                                     description = "Si le token fourni est invalide",
                                     content = @Content(mediaType = "application/json",
