@@ -25,44 +25,44 @@ id, name)
 VALUES (default, 'Gluten');
 
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Peanut', true, true, true, 'Peanuts', 2.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Peanut', true, true, true, 'Peanuts', 2.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price,path_picture)
-VALUES (default, 'Chicken', true, true, false, 'Chicken', 10.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Chicken', true, true, false, 'Chicken', 10.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Pork sausage', true, false, false, 'Pork sausage', 8.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Pork sausage', true, false, false, 'Pork sausage', 8.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Bread', true, true, true, 'Bread', 3.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Bread', true, true, true, 'Bread', 3.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Mustard', true, true, true, 'Mustard', 1.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Mustard', true, true, true, 'Mustard', 1.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Ground beef', true, true, false, 'Ground beef', 10.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Ground beef', true, true, false, 'Ground beef', 10.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Cheese', true, true, true, 'Cheese', 4.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Cheese', true, true, true, 'Cheese', 4.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Potatoes', true, true, true, 'Potatoes', 2.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Potatoes', true, true, true, 'Potatoes', 2.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Bacon', true, false, false, 'Pork bacon', 6.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Bacon', true, false, false, 'Pork bacon', 6.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Coffee', true, true, true, 'Coffee', 3.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Coffee', true, true, true, 'Coffee', 3.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Onion', true, true, true, 'Onion', 3.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Onion', true, true, true, 'Onion', 3.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Eggs', true, true, true, 'Eggs', 2.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Eggs', true, true, true, 'Eggs', 2.00);
 INSERT INTO public.ingredient(
-id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price, path_picture)
-VALUES (default, 'Milk', true, true, true, 'Milk', 2.00, null);
+id, name, is_in_stock, is_pork_free, is_vegan_friendly, description, price)
+VALUES (default, 'Milk', true, true, true, 'Milk', 2.00);
 
 INSERT INTO public.ingredient_allergen(
 id, ingredient_id, allergen_id)
@@ -78,32 +78,32 @@ id, ingredient_id, allergen_id)
 VALUES (default, 13, 2);
 
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Chicken with peanuts', 15.50, null, 'Chicken with peanuts dish', true, 'DISH');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Chicken with peanuts', 15.50, 'Chicken with peanuts dish', true, 'DISH');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Hot dog', 16.00, null, 'Hot dog', true, 'DISH');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Hot dog', 16.00, 'Hot dog', true, 'DISH');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Hamburger', 20.00, null, 'Hamburger', true, 'DISH');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Hamburger', 20.00, 'Hamburger', true, 'DISH');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'French fries', 5.00, null, 'French fries', true, 'SNACK');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'French fries', 5.00, 'French fries', true, 'SNACK');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Onion rings', 5.00, null, 'Onion rings', true, 'SNACK');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Onion rings', 5.00, 'Onion rings', true, 'SNACK');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Tiramisu', 10.00, null, 'Tiramisu', true, 'DESSERT');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Tiramisu', 10.00, 'Tiramisu', true, 'DESSERT');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Pancakes', 10.00, null, 'Pancakes', true, 'DESSERT');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Pancakes', 10.00, 'Pancakes', true, 'DESSERT');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Lemonade', 4.00, null, 'Lemon lemonade', true, 'DRINK');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Lemonade', 4.00, 'Lemon lemonade', true, 'DRINK');
 INSERT INTO public.product(
-id, name, price, path_picture, description, is_on_sale, category)
-VALUES (default, 'Plain water', 3.00, null, 'Plain water', true, 'DRINK');
+id, name, price, description, is_on_sale, category)
+VALUES (default, 'Plain water', 3.00, 'Plain water', true, 'DRINK');
 
 INSERT INTO public.product_ingredient(
 id, product_id, ingredient_id)
@@ -155,53 +155,53 @@ id, product_id, ingredient_id)
 VALUES (default, 7, 13);
 
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Peanut', 'Peanuts', 1.50, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Peanut', 'Peanuts', 1.50, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Chicken', 'Chicken', 8.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Chicken', 'Chicken', 8.00, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Pork sausage', 'Pork sausage', 6.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Pork sausage', 'Pork sausage', 6.00, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Bread', 'Bread', 2.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Bread', 'Bread', 2.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Mustard', 'Mustard', 0.50, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Mustard', 'Mustard', 0.50, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Ground beef', 'Ground beef', 7.50, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Ground beef', 'Ground beef', 7.50, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Cheese', 'Cheese', 3.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Cheese', 'Cheese', 3.00, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Potatoes', 'Potatoes', 1.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Potatoes', 'Potatoes', 1.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Bacon', 'Pork bacon', 5.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Bacon', 'Pork bacon', 5.00, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Coffee', 'Coffee', 1.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Coffee', 'Coffee', 1.00, true);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Onion', 'Onion', 2.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Onion', 'Onion', 2.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Eggs', 'Eggs', 1.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Eggs', 'Eggs', 1.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Milk', 'Milk', 0.50, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Milk', 'Milk', 0.50, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Orange', 'Orange', 2.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Orange', 'Orange', 2.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Raspberries', 'Raspberries', 3.00, null, false);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Raspberries', 'Raspberries', 3.00, false);
 INSERT INTO public.article(
-id, name, description, price_ht, path_picture, is_packaged)
-VALUES (default, 'Lamb', 'Lamb', 7.00, null, true);
+id, name, description, price_ht, is_packaged)
+VALUES (default, 'Lamb', 'Lamb', 7.00, true);
 
 INSERT INTO public.supplier(
 id, name, email, phone, street, city, zipcode, region, country)

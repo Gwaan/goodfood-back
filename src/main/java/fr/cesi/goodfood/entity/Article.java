@@ -36,9 +36,6 @@ public class Article {
     @Column(name = "is_packaged")
     private boolean isPackaged;
 
-    @Column(name = "path_picture")
-    private String picture;
-
     @ManyToMany(mappedBy = "articlesSelled")
     List<Supplier> suppliers;
 

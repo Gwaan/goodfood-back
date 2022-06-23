@@ -31,9 +31,6 @@ public class Product {
 
     private BigDecimal price;
 
-    @Column(name = "path_picture")
-    private String picture;
-
     private String description;
 
     private String category;

@@ -42,9 +42,6 @@ public class Ingredient {
 
     private BigDecimal price;
 
-    @Column(name = "path_picture")
-    private String picture;
-
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "ingredient_allergen",
                joinColumns = @JoinColumn(name = "ingredient_id"),
