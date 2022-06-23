@@ -19,16 +19,13 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Provider {
+public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
-
-    @Column(name = "ref")
-    private String reference;
 
     private String email;
 
@@ -46,8 +43,8 @@ public class Provider {
     private String country;
 
     @ManyToMany
-    @JoinTable(name = "provider_article",
-               joinColumns = @JoinColumn(name = "provider_id"),
+    @JoinTable(name = "supplier_article",
+               joinColumns = @JoinColumn(name = "supplier_id"),
                inverseJoinColumns = @JoinColumn(name = "article_id"))
     List<Article> articlesSelled;
 

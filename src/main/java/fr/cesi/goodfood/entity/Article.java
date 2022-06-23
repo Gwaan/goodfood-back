@@ -9,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -30,18 +28,15 @@ public class Article {
 
     private String description;
 
-    private BigDecimal price;
+    @Column(name = "price_ht")
+    private BigDecimal priceHT;
 
     private int quantity;
 
-    @Column(name = "path_picture")
-    private String picture;
-
-    @OneToOne
-    @JoinColumn(name = "vat_id")
-    private Vat vat;
+    @Column(name = "is_packaged")
+    private boolean isPackaged;
 
     @ManyToMany(mappedBy = "articlesSelled")
-    List<Provider> providers;
+    List<Supplier> suppliers;
 
 }

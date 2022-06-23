@@ -4,6 +4,5 @@ public enum Category {
     DISH,
     SNACK,
     DESSERT,
-    MEAL,
     DRINK;
 }

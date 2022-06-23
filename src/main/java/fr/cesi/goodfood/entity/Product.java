@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.entity;
 
-import fr.cesi.goodfood.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -33,16 +31,9 @@ public class Product {
 
     private BigDecimal price;
 
-    @Column(name = "path_picture")
-    private String picture;
-
     private String description;
 
     private String category;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vat_id")
-    private Vat vat;
 
     @Column(name = "is_on_sale")
     private boolean isOnSale;
