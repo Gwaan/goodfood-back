@@ -56,7 +56,6 @@ public class AuthServiceTest {
     }
 
     @Test
-    @WithAnonymousUser
     void should_Return_Jwt_Token() {
         LoginRequest loginRequest = new LoginRequest("test", "test");
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(
