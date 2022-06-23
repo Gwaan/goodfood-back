@@ -19,13 +19,13 @@ import java.util.Map;
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
     private static final String MESSAGE = "message";
 
     @ExceptionHandler(UserAlreadyExistingException.class)
     public ResponseEntity<Map<String, Object>> handleException(UserAlreadyExistingException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
@@ -33,7 +33,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(ZipCodeNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(ZipCodeNotFoundException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -41,7 +41,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(CustomerNotFoundException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -49,7 +49,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(RestaurantNotFoundException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -57,7 +57,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(PromoCodeNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(PromoCodeNotFoundException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(ProductNotFoundException e) {
-        LOGGER.debug(e.getMessage());
+        LOG.debug(e.getMessage());
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put(MESSAGE, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);

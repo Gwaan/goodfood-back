@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.payload.request;
 
-import fr.cesi.goodfood.entity.Restaurant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

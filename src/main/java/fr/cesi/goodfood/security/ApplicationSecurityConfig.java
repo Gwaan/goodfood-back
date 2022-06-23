@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.security;
 
-import fr.cesi.goodfood.auth.ApplicationUserDetailService;
 import fr.cesi.goodfood.security.jwt.JwtEntryPoint;
 import fr.cesi.goodfood.security.jwt.JwtTokenVerifierFilter;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+            .antMatchers("/swagger-resources",
+                         "/swagger-resources/**",
+                         "/configuration/ui",
+                         "/configuration/security",
+                         "/webjars/**",
+                         "/v3/api-docs/**",
+                         "/swagger-ui.html", "/swagger-ui/**").permitAll()
             .antMatchers("/api/auth/**").anonymous()
             .anyRequest().authenticated();
 

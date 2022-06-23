@@ -1,6 +1,5 @@
 package fr.cesi.goodfood.service;
 
-import fr.cesi.goodfood.api.exception.PromoCodeNotFoundException;
 import fr.cesi.goodfood.entity.Customer;
 import fr.cesi.goodfood.entity.Product;
 import fr.cesi.goodfood.entity.PromoCode;
@@ -12,9 +11,7 @@ import fr.cesi.goodfood.mapper.ProductMapper;
 import fr.cesi.goodfood.payload.request.OrderRequest;
 import fr.cesi.goodfood.payload.response.RestaurantOrderResponse;
 import fr.cesi.goodfood.repository.OrderRepository;
-import fr.cesi.goodfood.repository.PromoCodeRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,7 +56,7 @@ public class OrderService {
         List<Product> products =
                 orderRequest.getProductsOrdered()
                             .stream()
-                            .map(p -> productService.getProductByName(p))
+                            .map(productService::getProductByName)
                             .collect(Collectors.toList());
 
         Order order = new Order();

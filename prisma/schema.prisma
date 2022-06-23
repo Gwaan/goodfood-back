@@ -19,7 +19,6 @@ model article {
   description      String?            @db.VarChar
   price_ht         Decimal            @db.Decimal(5, 2)
   quantity         Int                @default(autoincrement())
-  path_picture     String?            @db.VarChar
   is_packaged      Boolean
   supplier_article supplier_article[]
 }
@@ -52,7 +51,6 @@ model ingredient {
   is_vegan_friendly   Boolean
   description         String                @db.VarChar
   price               Decimal               @db.Decimal(5, 2)
-  path_picture        String?               @db.VarChar
   ingredient_allergen ingredient_allergen[]
   product_ingredient  product_ingredient[]
 }
@@ -77,7 +75,6 @@ model product {
   id                 Int                  @id(map: "products_pkey") @default(autoincrement())
   name               String               @db.VarChar
   price              Decimal              @db.Decimal(5, 2)
-  path_picture       String?              @db.VarChar
   description        String               @db.VarChar
   is_on_sale         Boolean
   category           String               @db.VarChar
