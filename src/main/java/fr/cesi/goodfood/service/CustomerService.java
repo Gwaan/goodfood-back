@@ -2,9 +2,12 @@ package fr.cesi.goodfood.service;
 
 import fr.cesi.goodfood.api.exception.CustomerNotFoundException;
 import fr.cesi.goodfood.dto.CustomerDto;
+import fr.cesi.goodfood.dto.ProductRestaurantDto;
 import fr.cesi.goodfood.entity.Customer;
+import fr.cesi.goodfood.entity.Product;
 import fr.cesi.goodfood.entity.Restaurant;
 import fr.cesi.goodfood.mapper.CustomerMapper;
+import fr.cesi.goodfood.mapper.ProductMapper;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
@@ -13,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +67,15 @@ public class CustomerService {
         customer.setFavoriteRestaurant(restaurant);
         customerRepository.save(customer);
     }
+
+    public List<ProductRestaurantDto> findProductsSelledByRestaurant(String customerUsername) {
+        Customer customer = getCustomerByEmail(customerUsername);
+        List<Product> products = restaurantService.findProductsSelledByRestaurant(customer.getFavoriteRestaurant().getId());
+        List<ProductRestaurantDto> productRestaurantDtos = products.stream()
+                                                                   .map(p -> ProductMapper.INSTANCE.map(p))
+                                                                   .collect(Collectors.toList());
+        return productRestaurantDtos;
+    }
+
 }
 

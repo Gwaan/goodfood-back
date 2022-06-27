@@ -1,14 +1,20 @@
 package fr.cesi.goodfood.service;
 
+import fr.cesi.goodfood.api.exception.OrderNotFoundException;
+import fr.cesi.goodfood.api.exception.UnauthorizedOperationException;
 import fr.cesi.goodfood.entity.Customer;
 import fr.cesi.goodfood.entity.Product;
 import fr.cesi.goodfood.entity.PromoCode;
+import fr.cesi.goodfood.entity.Restaurant;
 import fr.cesi.goodfood.enums.OrderStatus;
 import fr.cesi.goodfood.mapper.CustomerMapper;
 import fr.cesi.goodfood.dto.ProductRestaurantDto;
 import fr.cesi.goodfood.entity.Order;
 import fr.cesi.goodfood.mapper.ProductMapper;
 import fr.cesi.goodfood.payload.request.OrderRequest;
+import fr.cesi.goodfood.payload.request.PreOrderRequest;
+import fr.cesi.goodfood.payload.request.UpdateOrderStatusRequest;
+import fr.cesi.goodfood.payload.response.PreOrderResponse;
 import fr.cesi.goodfood.payload.response.RestaurantOrderResponse;
 import fr.cesi.goodfood.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +34,11 @@ public class OrderService {
     private final PromoCodeService promoCodeService;
     private final CustomerService customerService;
     private final ProductService productService;
+    private final RestaurantService restaurantService;
+
+    public Order getOrderById(Integer orderId) {
+        return orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+    }
 
     public List<RestaurantOrderResponse> getOrderFromRestaurantEmail(String email) {
         List<RestaurantOrderResponse> restaurantOrderResponses = new ArrayList<>();
@@ -39,6 +50,7 @@ public class OrderService {
                 ProductRestaurantDto productRestaurantDto = ProductMapper.INSTANCE.map(product);
                 productRestaurantDtos.add(productRestaurantDto);
             });
+            restaurantOrderResponse.setOrderId(order.getId());
             restaurantOrderResponse.setTotalTTC(order.getTotalTTC());
             restaurantOrderResponse.setPayed(order.isPayed());
             restaurantOrderResponse.setCreatedAt(order.getCreatedAt());
@@ -60,10 +72,7 @@ public class OrderService {
                             .collect(Collectors.toList());
 
         Order order = new Order();
-        BigDecimal totalTTC = products.stream()
-                                      .map(Product::getPrice)
-                                      .reduce(BigDecimal.ZERO,
-                                              BigDecimal::add);
+        BigDecimal totalTTC = getTotalTtc(products);
         if (orderRequest.getPromoCode() != null) {
             PromoCode promoCode = promoCodeService.getPromoCodeByCodekey(orderRequest.getPromoCode());
             order.setTotalTTC(applyDiscount(promoCode.getPercentage(), totalTTC));
@@ -82,10 +91,49 @@ public class OrderService {
 
     }
 
+    public PreOrderResponse getPreOrder(PreOrderRequest preOrderRequest) {
+        PreOrderResponse preOrderResponse = new PreOrderResponse();
+        List<Product> products =
+                preOrderRequest.getProductsOrdered()
+                               .stream()
+                               .map(productService::getProductByName)
+                               .collect(Collectors.toList());
+        BigDecimal totalTTC = getTotalTtc(products);
+        preOrderResponse.setTotalTTC(totalTTC);
+        PromoCode promoCode = promoCodeService.getPromoCodeByCodekey(preOrderRequest.getPromoCode());
+        if (promoCode == null) {
+            preOrderResponse.setTotalWithDiscount(totalTTC);
+        } else {
+            preOrderResponse.setPercentageDiscount(promoCode.getPercentage());
+            preOrderResponse.setTotalWithDiscount(applyDiscount(promoCode.getPercentage(), totalTTC));
+        }
+
+        return preOrderResponse;
+
+    }
+
+    public void updateOrderStatus(UpdateOrderStatusRequest updateOrderStatusRequest, String restaurantUsername) {
+        Restaurant restaurant = restaurantService.findRestaurantByUsername(restaurantUsername);
+        Order order = getOrderById(updateOrderStatusRequest.getOrderId());
+        if (order.getRestaurant().getId() != restaurant.getId()) {
+            throw new UnauthorizedOperationException("Unauthorized operation");
+        }
+        order.setStatus(updateOrderStatusRequest.getNewStatus());
+        orderRepository.save(order);
+    }
+
     private BigDecimal applyDiscount(double discountPercentage, BigDecimal totalTTC) {
         return totalTTC.subtract(
                 totalTTC.multiply(BigDecimal.valueOf(discountPercentage)).divide(BigDecimal.valueOf(100)).setScale(2,
                                                                                                                    RoundingMode.HALF_UP));
     }
+
+    private BigDecimal getTotalTtc(List<Product> products) {
+        return products.stream()
+                       .map(Product::getPrice)
+                       .reduce(BigDecimal.ZERO,
+                               BigDecimal::add);
+    }
+
 
 }
