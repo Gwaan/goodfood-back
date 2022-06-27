@@ -5,7 +5,7 @@
 -- Dumped from database version 14.3
 -- Dumped by pg_dump version 14.3
 
--- Started on 2022-06-27 18:51:27
+-- Started on 2022-06-27 19:06:20
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -734,7 +734,8 @@ CREATE TABLE public.restaurant (
     region character varying(255) NOT NULL,
     country character varying(255) NOT NULL,
     role character varying NOT NULL,
-    supplier_id integer NOT NULL
+    supplier_id integer NOT NULL,
+    phone character varying
 );
 
 
@@ -1450,10 +1451,10 @@ COPY public.promo_code (id, code_key, percentage_on_order, is_active, created_at
 -- Data for Name: restaurant; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.restaurant (id, name, email, password, street, city, zipcode, region, country, role, supplier_id) FROM stdin;
-1	Goodfood france restaurant	france.restaurant@goodfood.fr	$2y$10$92RSbi/rNojHK/N04Ef/aONmumt7/p7XqWRi/b6jIA.wWPor4Rqoa	2 rue Sainte Catherine	BORDEAUX	33000	Nouvelle Aquitaine	FRANCE	ROLE_RESTAURANT	1
-2	Goodfood belgium restaurant	belgium.restaurant@goodfood.be	$2y$10$MSTskPDHqN9jeP4DZnhFnu3WNc8YfiZPJjOOGi3IrtHbejgpaB7om	2 rue de l'Abbaye	BRUXELLES	1000	Région Bruxelloise	BELGIUM	ROLE_RESTAURANT	2
-3	Goodfood luxembourg restaurant	luxembourg.restaurant@goodfood.lu	$2y$10$QnMvgLbOhbkm.SEm4guhjuPHXhrLrXnYMpR4XfsHrnqMeKbrdjx7y	2 rue des Glacis	LUXEMBOURG	L-2090	Luxembourg	LUXEMBOURG	ROLE_RESTAURANT	3
+COPY public.restaurant (id, name, email, password, street, city, zipcode, region, country, role, supplier_id, phone) FROM stdin;
+1	Goodfood france restaurant	france.restaurant@goodfood.fr	$2y$10$92RSbi/rNojHK/N04Ef/aONmumt7/p7XqWRi/b6jIA.wWPor4Rqoa	2 rue Sainte Catherine	BORDEAUX	33000	Nouvelle Aquitaine	FRANCE	ROLE_RESTAURANT	1	\N
+2	Goodfood belgium restaurant	belgium.restaurant@goodfood.be	$2y$10$MSTskPDHqN9jeP4DZnhFnu3WNc8YfiZPJjOOGi3IrtHbejgpaB7om	2 rue de l'Abbaye	BRUXELLES	1000	Région Bruxelloise	BELGIUM	ROLE_RESTAURANT	2	\N
+3	Goodfood luxembourg restaurant	luxembourg.restaurant@goodfood.lu	$2y$10$QnMvgLbOhbkm.SEm4guhjuPHXhrLrXnYMpR4XfsHrnqMeKbrdjx7y	2 rue des Glacis	LUXEMBOURG	L-2090	Luxembourg	LUXEMBOURG	ROLE_RESTAURANT	3	\N
 \.
 
 
@@ -2117,7 +2118,7 @@ ALTER TABLE ONLY public.restaurant
     ADD CONSTRAINT supplier_id FOREIGN KEY (supplier_id) REFERENCES public.supplier(id);
 
 
--- Completed on 2022-06-27 18:51:27
+-- Completed on 2022-06-27 19:06:20
 
 --
 -- PostgreSQL database dump complete

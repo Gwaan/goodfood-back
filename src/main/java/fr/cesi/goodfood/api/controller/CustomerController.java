@@ -3,9 +3,8 @@ package fr.cesi.goodfood.api.controller;
 import fr.cesi.goodfood.dto.CustomerDto;
 import fr.cesi.goodfood.dto.ProductRestaurantDto;
 import fr.cesi.goodfood.dto.RestaurantDto;
-import fr.cesi.goodfood.entity.Product;
+import fr.cesi.goodfood.entity.Order;
 import fr.cesi.goodfood.payload.request.OrderRequest;
-import fr.cesi.goodfood.payload.request.PreOrderRequest;
 import fr.cesi.goodfood.payload.request.RestaurantByZipCodeRequest;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
@@ -178,10 +177,10 @@ public class CustomerController extends AbstractController {
                                          content = @Content(schema = @Schema(implementation
                                                  = PreOrderResponse.class))),
                        @ApiResponse(responseCode = "404",
-                                    description = "Si le code promo n'est pas trouvé en base de données",
+                                    description = "Si un des produits n'est pas trouvé",
                                     content = @Content(mediaType = "application/json",
                                                        schema =
-                                                       @Schema(defaultValue = "Promo code not found"))),
+                                                       @Schema(defaultValue = "One product is not found"))),
                        @ApiResponse(responseCode = "401",
                                     description = "Si le token fourni est invalide",
                                     content = @Content(mediaType = "application/json",
@@ -191,10 +190,10 @@ public class CustomerController extends AbstractController {
     public ResponseEntity<PreOrderResponse> getPreOrder(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Produits dans le panier du client ainsi que le code promo",
                                                                   content = @Content(schema = @Schema(implementation
-                                                                          = PreOrderRequest.class)))
+                                                                          = OrderRequest.class)))
             @RequestBody
-                    PreOrderRequest preOrderRequest) {
-        return ResponseEntity.ok(orderService.getPreOrder(preOrderRequest));
+                    OrderRequest orderRequest) {
+        return ResponseEntity.ok(orderService.getPreOrder(orderRequest));
     }
 
     @Operation(summary = "Retourne la liste des produits vendus par le restaurant favori du client",

@@ -35,7 +35,12 @@ public class AuthController {
                                          description = "Réponse en cas de succès de l'authentification",
                                          content = @Content(mediaType = "application/json",
                                                             schema = @Schema(implementation =
-                                                                    JwtResponse.class)))})
+                                                                    JwtResponse.class))),
+                       @ApiResponse(responseCode = "401",
+                                    description = "Si les identifiants sont invalides",
+                                    content = @Content(mediaType = "application/json",
+                                                       schema = @Schema(defaultValue
+                                                               = "Unauthorized")))})
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> loginHandler(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Nom d'utilisateur et mot de passe",
