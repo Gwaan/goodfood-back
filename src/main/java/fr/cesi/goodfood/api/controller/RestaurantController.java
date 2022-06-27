@@ -1,5 +1,6 @@
 package fr.cesi.goodfood.api.controller;
 
+import fr.cesi.goodfood.payload.request.UpdateOrderStatusRequest;
 import fr.cesi.goodfood.payload.response.RestaurantOrderResponse;
 import fr.cesi.goodfood.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -46,6 +49,25 @@ public class RestaurantController extends AbstractController {
     @GetMapping("/orders")
     public ResponseEntity<List<RestaurantOrderResponse>> getOrders() {
         return ResponseEntity.ok(orderService.getOrderFromRestaurantEmail(getUsernameFromPrincipal()));
+    }
+
+    @Operation(summary = "Modifier le statut d'une commande",
+               tags = "Restaurant",
+               security = @SecurityRequirement(name = "bearerAuth"),
+               responses = {@ApiResponse(responseCode = "200",
+                                         description = "Réponse en cas de succès de la modification du status",
+                                         content = @Content),
+                       @ApiResponse(responseCode = "401",
+                                    description = "Si un restaurant tente de modifier une commande ne lui appartenant pas ou si le token est invalide",
+                                    content = @Content(mediaType = "application/json",
+                                                       schema = @Schema(defaultValue
+                                                               = "Unauthorized")))})
+    @PostMapping("/updateOrderStatus")
+    public ResponseEntity<Void> updateOrderStatus(
+            @RequestBody
+                    UpdateOrderStatusRequest updateOrderStatusRequest) {
+        orderService.updateOrderStatus(updateOrderStatusRequest, getUsernameFromPrincipal());
+        return ResponseEntity.ok().build();
     }
 
 }

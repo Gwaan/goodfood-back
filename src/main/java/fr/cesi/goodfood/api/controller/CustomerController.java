@@ -1,13 +1,19 @@
 package fr.cesi.goodfood.api.controller;
 
 import fr.cesi.goodfood.dto.CustomerDto;
+import fr.cesi.goodfood.dto.ProductRestaurantDto;
 import fr.cesi.goodfood.dto.RestaurantDto;
+import fr.cesi.goodfood.entity.Product;
 import fr.cesi.goodfood.payload.request.OrderRequest;
+import fr.cesi.goodfood.payload.request.PreOrderRequest;
+import fr.cesi.goodfood.payload.request.RestaurantByZipCodeRequest;
 import fr.cesi.goodfood.payload.request.SetFavoriteRestaurantRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerPasswordRequest;
 import fr.cesi.goodfood.payload.request.UpdateCustomerRequest;
+import fr.cesi.goodfood.payload.response.PreOrderResponse;
 import fr.cesi.goodfood.service.CustomerService;
 import fr.cesi.goodfood.service.OrderService;
+import fr.cesi.goodfood.service.ProductService;
 import fr.cesi.goodfood.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -40,6 +46,7 @@ public class CustomerController extends AbstractController {
     private final CustomerService customerService;
     private final RestaurantService restaurantService;
     private final OrderService orderService;
+    private final ProductService productService;
 
     @Operation(summary = "Mise à jour client",
                tags = "Client",
@@ -86,7 +93,7 @@ public class CustomerController extends AbstractController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Trouver tous les restaurants ayant le même code postal que le client",
+    @Operation(summary = "Trouver tous les restaurants en fonction d'un code postal",
                tags = "Client",
                security = @SecurityRequirement(name = "bearerAuth"),
                responses = {@ApiResponse(responseCode = "200",
@@ -104,9 +111,14 @@ public class CustomerController extends AbstractController {
                                     content = @Content(mediaType = "application/json",
                                                        schema = @Schema(defaultValue
                                                                = "Unauthorized")))})
-    @GetMapping("/restaurants")
-    public ResponseEntity<List<RestaurantDto>> getRestaurantsByZipCode() {
-        return ResponseEntity.ok(restaurantService.findRestaurantsByZipCode(getZipCodeFromPrincipalCustomer()));
+    @PostMapping("/restaurantsList")
+    public ResponseEntity<List<RestaurantDto>> getRestaurantsByZipCode(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Code postal des restaurants à récupérer",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = RestaurantByZipCodeRequest.class)))
+            @RequestBody
+                    RestaurantByZipCodeRequest restaurantByZipCodeRequest) {
+        return ResponseEntity.ok(restaurantService.findRestaurantsByZipCode(restaurantByZipCodeRequest));
     }
 
     @Operation(summary = "Définir le restaurant favori du client",
@@ -156,6 +168,51 @@ public class CustomerController extends AbstractController {
                     OrderRequest orderRequest) {
         orderService.saveOrder(orderRequest, getUsernameFromPrincipal());
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Avoir le prix remisé si un coupon de remise est appliqué, si non, renvoi le prix sans remise",
+               tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
+               responses = {@ApiResponse(responseCode = "200",
+                                         description = "Réponse en cas de succès de récupération du code promo ",
+                                         content = @Content),
+                       @ApiResponse(responseCode = "404",
+                                    description = "Si le code promo n'est pas trouvé en base de données",
+                                    content = @Content(mediaType = "application/json",
+                                                       schema =
+                                                       @Schema(defaultValue = "Promo code not found"))),
+                       @ApiResponse(responseCode = "401",
+                                    description = "Si le token fourni est invalide",
+                                    content = @Content(mediaType = "application/json",
+                                                       schema = @Schema(defaultValue
+                                                               = "Unauthorized")))})
+    @PostMapping("/preorder")
+    public ResponseEntity<PreOrderResponse> getPreOrder(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Produits dans le panier du client ainsi que le code promo",
+                                                                  content = @Content(schema = @Schema(implementation
+                                                                          = PreOrderRequest.class)))
+            @RequestBody
+                    PreOrderRequest preOrderRequest) {
+        return ResponseEntity.ok(orderService.getPreOrder(preOrderRequest));
+    }
+
+    @Operation(summary = "Retourne la liste des produits vendus par le restaurant favori du client",
+               tags = "Client",
+               security = @SecurityRequirement(name = "bearerAuth"),
+               responses = {@ApiResponse(responseCode = "200",
+                                         description = "Réponse en cas de succès de la récupération des produits",
+                                         content = @Content(mediaType = "application/json",
+                                                            array =
+                                                            @ArraySchema(schema = @Schema(implementation =
+                                                                    ProductRestaurantDto.class)))),
+                       @ApiResponse(responseCode = "401",
+                                    description = "Si le token fourni est invalide",
+                                    content = @Content(mediaType = "application/json",
+                                                       schema = @Schema(defaultValue
+                                                               = "Unauthorized")))})
+    @GetMapping("/restaurantProducts")
+    public ResponseEntity<List<ProductRestaurantDto>> getProductsSelledByRestaurant() {
+        return ResponseEntity.ok(customerService.findProductsSelledByRestaurant(getUsernameFromPrincipal()));
     }
 
 }

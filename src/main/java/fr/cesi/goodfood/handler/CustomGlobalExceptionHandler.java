@@ -1,9 +1,11 @@
 package fr.cesi.goodfood.handler;
 
 import fr.cesi.goodfood.api.exception.CustomerNotFoundException;
+import fr.cesi.goodfood.api.exception.OrderNotFoundException;
 import fr.cesi.goodfood.api.exception.ProductNotFoundException;
 import fr.cesi.goodfood.api.exception.PromoCodeNotFoundException;
 import fr.cesi.goodfood.api.exception.RestaurantNotFoundException;
+import fr.cesi.goodfood.api.exception.UnauthorizedOperationException;
 import fr.cesi.goodfood.api.exception.UserAlreadyExistingException;
 import fr.cesi.goodfood.api.exception.ZipCodeNotFoundException;
 import org.slf4j.Logger;
@@ -71,4 +73,19 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleException(OrderNotFoundException e) {
+        LOG.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UnauthorizedOperationException.class)
+    public ResponseEntity<Map<String, Object>> handleException(UnauthorizedOperationException e) {
+        LOG.debug(e.getMessage());
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put(MESSAGE, e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 }

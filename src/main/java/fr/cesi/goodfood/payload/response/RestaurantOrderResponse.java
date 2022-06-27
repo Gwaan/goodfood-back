@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 public class RestaurantOrderResponse {
 
+    private Integer orderId;
     private BigDecimal totalTTC;
     private boolean isPayed;
     private LocalDateTime createdAt;
