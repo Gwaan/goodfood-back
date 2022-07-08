@@ -59,7 +59,7 @@ public class AuthController {
                                                  (mediaType = "application/json",
                                                   schema = @Schema(implementation = RegisterResponse.class))),
                        @ApiResponse(responseCode = "409",
-                                    description = "Si le code promo n'est pas trouvé",
+                                    description = "Si l'utilisateur existe déjà en base de données",
                                     content = @Content(mediaType = "application/json",
                                                        schema =
                                                        @Schema(defaultValue = "User already existing in database")))})

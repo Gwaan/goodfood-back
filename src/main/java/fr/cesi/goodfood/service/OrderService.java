@@ -123,12 +123,11 @@ public class OrderService {
 
     private BigDecimal getTotalTTC(List<ProductQuantityDto> productsOrdered) {
         return productsOrdered.stream()
-                              .map(productQuantityDto -> {
-                                  return multiplyPriceByQuantity(productQuantityDto.getQuantity(),
-                                                                 productService.getProductById(
-                                                                                       productQuantityDto.getProductId())
-                                                                               .getPrice());
-                              }).reduce(BigDecimal.ZERO, BigDecimal::add);
+                              .map(productQuantityDto -> multiplyPriceByQuantity(productQuantityDto.getQuantity(),
+                                                                                 productService.getProductById(
+                                                                                                       productQuantityDto.getProductId())
+                                                                                               .getPrice())
+                                  ).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private BigDecimal applyDiscount(double discountPercentage, BigDecimal totalTTC) {
