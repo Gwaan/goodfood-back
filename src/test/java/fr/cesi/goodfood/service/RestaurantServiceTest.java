@@ -46,9 +46,9 @@ public class RestaurantServiceTest {
     @Test
     void should_Return_Restaurant_By_Id() {
         when(restaurantRepository.findById(anyInt())).thenReturn(Optional.of(restaurant));
-        Restaurant restaurantSaved = restaurantService.getRestaurantById(1);
+        Restaurant restaurantRetrieved = restaurantService.getRestaurantById(1);
         verify(restaurantRepository, times(1)).findById(anyInt());
-        assertEquals(restaurant, restaurantSaved);
+        assertEquals(restaurant, restaurantRetrieved);
 
     }
 
