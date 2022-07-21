@@ -1,19 +1,18 @@
 image: maven:3.8.6-openjdk-11
-variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
-cache:
-  paths:
-    - .m2/repository/
+
 stages:
     - build
     - test
 
 
 maven-build-stage:
-    stage: build
-    script: mvn clean -DskipTests
+  stage: build
+  script: mvn clean install -DskipTests
+  only:
+    - develop
 
 maven-test-stage:
   stage: test
   script: mvn test -Dspring.profiles.active=test -Djasypt.encryptor.password=Ces!123
+  only:
+    - develop
